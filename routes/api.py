@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, render_template, redirect, url_for, request
-from models import Matches, TeamsMatches, Players, Teams
+from models import Match, TeamMatch, Player, Team
 from db import db
 from werkzeug.exceptions import BadRequest
 from datetime import datetime as dt

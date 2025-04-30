@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from models import Teams, TeamsMatches, Players, Matches
+from models import Team, TeamMatch, Player, Match
 from db import db
 from app import app
 import sys
@@ -7,9 +7,8 @@ import csv
 import random
 from datetime import datetime as dt
 from datetime import timedelta
+from random import randint 
 
-# This file was used to read data from a CSV which we can use to put a bunch of data into our database after we create our tables
-# IGNORE THIS FILE FOR NOW
 
 def create_tables():
     """Create all database tables based on the models."""
@@ -21,87 +20,75 @@ def drop_tables():
 
 # ------------------ Data Import Functions ------------------
 
-# def import_products():
-#     """Import products and categories from 'products.csv' into the database."""
-#     with open("products.csv", "r", encoding="utf-8") as file:
-#         data = csv.DictReader(file)  # Read each row as a dictionary.
+def import_players():
+    with open("players.csv", "r", encoding="utf-8") as file:
+        data = csv.DictReader(file)  # Read each row as a dictionary.
 
-#         for line in data:
-#             # Check if the category already exists
-#             possible_category = db.session.execute(
-#                 select(Category).where(Category.name == line["category"])
-#             ).scalar()
+        for line in data:
+            # Check if the team already exists
+            possible_team = db.session.execute(
+                select(Team).where(Team.name == line["team"])).scalar()
 
-#             if not possible_category:
-#                 category_obj = Category(name=line["category"])
-#                 db.session.add(category_obj)  # Add new category
-#             else:
-#                 category_obj = possible_category  # Reuse existing category
+            if not possible_team:
+                team_obj = Team(name=line["team"])
+                db.session.add(team_obj)  # Add new team
+            else:
+                category_obj = possible_team  # Reuse existing team
 
-#             # Create a new product linked to the category
-#             product = Product(
-#                 name=line["name"],
-#                 price=float(line["price"]),
-#                 inventory=line["available"],
-#                 category=category_obj
-#             )
-#             db.session.add(product)  # Add product to the session
+            # Create a new player linked to the category
+            player = Player(
+                name=line["name"],
+                age=int(line["age"]),
+                gamertag=line["gamertag"],
+                team=team_obj
+            )
+            db.session.add(player) 
 
-#         db.session.commit()  # Save all new categories and products
-
-# def import_customers():
-#     """Import customers from 'customers.csv' into the database."""
-#     with open("customers.csv", "r", encoding="utf-8") as file:
-#         data = csv.DictReader(file)
-
-#         for line in data:
-#             customer = Customer(
-#                 name=line["name"],
-#                 phone=line["phone"]
-#             )
-#             db.session.add(customer)  # Add each customer
-
-#         db.session.commit()  # Save all new customers
+        db.session.commit()  
 
 # # ------------------ Random Data Generation ------------------
 
-# def random_orders():
-#     """Generate random orders for testing purposes."""
-#     for _ in range(10):  # Create 10 random orders
-#         # Select a random customer
-#         random_customer = db.session.execute(
-#             select(Customer).order_by(func.random())
-#         ).scalar()
+def random_matches():
+    for _ in range(10):  # Create 10 random orders
+        # Select a random team
+        random_team1 = db.session.execute(
+            select(Team).order_by(db.func.random())).scalar()
+        
+        random_team2 = db.session.execute(
+            select(Team).where(Team != random_team1).order_by(db.func.random())).scalar()
 
-#         # Select a random number of products (4–6)
-#         num_prods = randint(4, 6)
-#         random_prods = db.session.execute(
-#             select(Product).order_by(func.random()).limit(num_prods)
-#         ).scalars()
+        teams =[]
+        teams.append(random_team1)
+        teams.append(random_team2)
 
-#         # Generate a random creation timestamp within the past few days
-#         created_time = dt.now() - timedelta(
-#             days=randint(1, 3),
-#             hours=randint(0, 15),
-#             minutes=randint(0, 30)
-#         )
+        randnum = randint(1, 2)
+        if randnum == 1:
+            winning_team = random_team1.name
+        else:
+            winning_team = random_team2.name
 
-#         # Create the order
-#         order = Order(
-#             customer=random_customer,
-#             created=created_time
-#         )
+        # Generate a random match timestamp within the past few days
+        created_time = dt.now() - timedelta(
+            days=randint(1, 3),
+            hours=randint(0, 15),
+            minutes=randint(0, 30)
+        )
 
-#         # Create product-order entries for the order
-#         for prod in random_prods:
-#             product_order = ProductOrder(
-#                 order=order,
-#                 product=prod,
-#                 quantity=randint(4, 7)  # Random quantity per product
-#             )
-#             db.session.add(product_order)
+        # Create the order
+        match = Match(
+            winner=winning_team,
+            time =created_time
+        )
 
-#     db.session.commit()  # Save all new orders and items
+        # Create product-order entries for the order
+        for team in teams:
+            teams_matches = TeamMatch(
+                teams=team,
+                matches=match,
+            )
+            db.session.add(teams_matches)
+
+    db.session.commit()  # Save all new orders and items
 
 # ------------------ Main Execution Block ------------------
 
@@ -118,9 +105,8 @@ if __name__ == "__main__":
         drop_tables()
     elif choice == "create":
         create_tables()
-    # elif choice == "import":
-    #     drop_tables()
-    #     create_tables()
-    #     import_products()
-    #     import_customers()
-    #     random_orders()
+    elif choice == "import":
+        drop_tables()
+        create_tables()
+        import_players()
+        random_matches()

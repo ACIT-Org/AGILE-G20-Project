@@ -1,5 +1,5 @@
-__all__ = ["Matches", "Players", "Teams", "TeamsMatches"]
-from .matches import Matches
-from .players import Players
-from .teams import Teams
-from .teamsmatches import TeamsMatches
+__all__ = ["Match", "Player", "Team", "TeamMatch"]
+from .matches import Match
+from .players import Player
+from .teams import Team
+from .teamsmatches import TeamMatch
