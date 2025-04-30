@@ -6,6 +6,8 @@ class Match(db.Model):
     __tablename__ = "matches"
     
     id = mapped_column(Integer, primary_key=True)
-    completed = mapped_column(Boolean)
+    winner = mapped_column(String)
+    time = mapped_column(String)
+    
 
     teams = relationship('TeamMatch', back_populates='matches')

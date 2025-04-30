@@ -7,9 +7,8 @@ import csv
 import random
 from datetime import datetime as dt
 from datetime import timedelta
+from random import randint 
 
-# This file was used to read data from a CSV which we can use to put a bunch of data into our database after we create our tables
-# IGNORE THIS FILE FOR NOW
 
 def create_tables():
     """Create all database tables based on the models."""
@@ -43,63 +42,53 @@ def import_players():
                 gamertag=line["gamertag"],
                 team=team_obj
             )
-            db.session.add(player)  # Add product to the session
+            db.session.add(player) 
 
-        db.session.commit()  # Save all new categories and products
-
-# def import_matches():
-#     """Import customers from 'customers.csv' into the database."""
-#     with open("matches.csv", "r", encoding="utf-8") as file:
-#         data = csv.DictReader(file)
-
-#         for line in data:
-#             customer = Customer(
-#                 name=line["name"],
-#                 phone=line["phone"]
-#             )
-#             db.session.add(customer)  # Add each customer
-
-#         db.session.commit()  # Save all new customers
+        db.session.commit()  
 
 # # ------------------ Random Data Generation ------------------
 
-# def random_orders():
-#     """Generate random orders for testing purposes."""
-#     for _ in range(10):  # Create 10 random orders
-#         # Select a random customer
-#         random_customer = db.session.execute(
-#             select(Customer).order_by(func.random())
-#         ).scalar()
+def random_matches():
+    for _ in range(10):  # Create 10 random orders
+        # Select a random team
+        random_team1 = db.session.execute(
+            select(Team).order_by(db.func.random())).scalar()
+        
+        random_team2 = db.session.execute(
+            select(Team).where(Team != random_team1).order_by(db.func.random())).scalar()
 
-#         # Select a random number of products (4–6)
-#         num_prods = randint(4, 6)
-#         random_prods = db.session.execute(
-#             select(Product).order_by(func.random()).limit(num_prods)
-#         ).scalars()
+        teams =[]
+        teams.append(random_team1)
+        teams.append(random_team2)
 
-#         # Generate a random creation timestamp within the past few days
-#         created_time = dt.now() - timedelta(
-#             days=randint(1, 3),
-#             hours=randint(0, 15),
-#             minutes=randint(0, 30)
-#         )
+        randnum = randint(1, 2)
+        if randnum == 1:
+            winning_team = random_team1.name
+        else:
+            winning_team = random_team2.name
 
-#         # Create the order
-#         order = Order(
-#             customer=random_customer,
-#             created=created_time
-#         )
+        # Generate a random match timestamp within the past few days
+        created_time = dt.now() - timedelta(
+            days=randint(1, 3),
+            hours=randint(0, 15),
+            minutes=randint(0, 30)
+        )
 
-#         # Create product-order entries for the order
-#         for prod in random_prods:
-#             product_order = ProductOrder(
-#                 order=order,
-#                 product=prod,
-#                 quantity=randint(4, 7)  # Random quantity per product
-#             )
-#             db.session.add(product_order)
+        # Create the order
+        match = Match(
+            winner=winning_team,
+            time =created_time
+        )
 
-#     db.session.commit()  # Save all new orders and items
+        # Create product-order entries for the order
+        for team in teams:
+            teams_matches = TeamMatch(
+                teams=team,
+                matches=match,
+            )
+            db.session.add(teams_matches)
+
+    db.session.commit()  # Save all new orders and items
 
 # ------------------ Main Execution Block ------------------
 
@@ -120,5 +109,4 @@ if __name__ == "__main__":
         drop_tables()
         create_tables()
         import_players()
-        # import_customers()
-        # random_orders()
+        random_matches()
