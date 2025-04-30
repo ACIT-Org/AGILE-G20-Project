@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <body>
+    <h1>Teams</h1>
+    <table>
+        <th>Name</th>
+      </tr>
+      {% for row in teams %}
+      <tr>
+        <td><a href="{{ url_for('team_name', name=row.name) }}"
+          >{{ row.name }}</a
+        ></td>
+     
+      </tr>
+      {% endfor %}
+
+    </table>
+  </body>
+{% endblock %}

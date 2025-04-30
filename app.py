@@ -13,33 +13,44 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 # This will make Flask store the database file in the path provided
 app.instance_path = Path(".").resolve()
+db.init_app(app)
 
 @app.route("/")
 def home():
  return render_template("home.html", my_list=["Tim", "Bob", "Alice"])
 
 @app.route("/matches")
-def product_view():
+def matches_view():
     statement = db.select(Match).order_by(Match.id)
     results = db.session.execute(statement).scalars()
     return render_template("products.html", products=results)
 
 @app.route("/teams")
-def product_view():
-    statement = db.select(Match).order_by(Match.id)
+def teams_view():
+    statement = db.select(Team).order_by(Team.id)
     results = db.session.execute(statement).scalars()
-    return render_template("products.html", products=results)
+    return render_template("teams.html", teams=results)
 
 @app.route(("/teams/<string:name>"))
-def category_detail(name):
+def team_name(name):
     stmt1 = db.select(Team).where(Team.name == name)
     found_team = db.session.execute(stmt1).scalar()
 
     stmt2 = db.select(Player).where(Player.team_id == found_team.id)
     team_players = db.session.execute(stmt2).scalars()
-    return render_template("categorysort.html", category=team_players, name=name.capitalize())
+    return render_template("team_details.html", team=team_players, name = ' '.join([word.capitalize() for word in name.split()]))
 
-db.init_app(app)
+@app.route("/players")
+def players_view():
+    statement = db.select(Player).order_by(Player.id)
+    results = db.session.execute(statement).scalars()
+    return render_template("players.html", players=results)
+
+@app.route(("/players/<int:id>"))
+def player_id(id):
+    statement = db.select(Player).where(Player.id == id)
+    player = db.session.execute(statement).scalar()
+    return render_template("playerid.html", player=player)
 
 app.register_blueprint(api_bp, url_prefix="/api")
 
