@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 from pathlib import Path
-# from models import Product, Customer, Category, Order
+from models import Match, Player, Team
 from db import db
 from routes.api import api_bp
 from sqlalchemy import desc
@@ -17,6 +17,11 @@ app.instance_path = Path(".").resolve()
 @app.route("/")
 def home():
  return render_template("home.html", my_list=["Tim", "Bob", "Alice"])
+
+@app.route("/matches")
+def product_view():
+    statement = db.select(Match).order_by(Match.id)
+    results = db.session.execute(statement).scalars()
 
 db.init_app(app)
 
