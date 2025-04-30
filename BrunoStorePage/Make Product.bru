@@ -1,0 +1,20 @@
+meta {
+  name: Make Product
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8888/api/product
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "kyle",
+    "price": 420.69,
+    "inventory": 123,
+    "category": "people"
+  }
+}

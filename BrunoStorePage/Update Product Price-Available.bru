@@ -1,0 +1,18 @@
+meta {
+  name: Update Product Price/Available
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8888/api/products/tomato
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+   "available": 111,
+   "price": 1.45
+  }
+}

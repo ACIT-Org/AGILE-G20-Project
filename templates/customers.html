@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <body>
+    <h1>Customers</h1>
+    <table>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Phone</th>
+      </tr>
+      {% for row in customers %}
+      <tr>
+        <td>{{ row.id }}</td>
+        <td><a href="{{ url_for('customer_id', id=row.id) }}"
+          >{{ row.name }}</a
+        ></td>
+        <td>{{ row.phone }}</td>
+      </tr>
+      {% endfor %}
+
+    </table>
+  </body>
+
+  {% endblock %}

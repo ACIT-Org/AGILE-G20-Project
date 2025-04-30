@@ -1,0 +1,18 @@
+meta {
+  name: Orders Created/Completed Date
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:8888/orders?filter=created&before=2025-04-01@00:00:00&after=2025-03-31@00:00:00
+  body: none
+  auth: inherit
+}
+
+params:query {
+  filter: created
+  before: 2025-04-01@00:00:00
+  after: 2025-03-31@00:00:00
+  ~filter: completed
+}

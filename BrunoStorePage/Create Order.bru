@@ -1,0 +1,24 @@
+meta {
+  name: Create Order
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8888/api/orders
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+   "customer_phone": "236-057-9517",
+    "items": [
+   ["watermelon", 10],
+   ["yogurt", 2],
+   ["orange", 50]
+   ]
+  
+  
+  }
+}
