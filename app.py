@@ -10,7 +10,7 @@ from datetime import timedelta
 app = Flask(__name__)
 
 # This will make Flask use a 'sqlite' database with the filename provided
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///i_copy_pasted_this.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 # This will make Flask store the database file in the path provided
 app.instance_path = Path(".").resolve()
 
