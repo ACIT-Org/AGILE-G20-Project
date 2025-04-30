@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from models import Teams, TeamsMatches, Players, Matches
+from models import Team, TeamMatch, Player, Match
 from db import db
 from app import app
 import sys
@@ -21,37 +21,35 @@ def drop_tables():
 
 # ------------------ Data Import Functions ------------------
 
-# def import_products():
-#     """Import products and categories from 'products.csv' into the database."""
-#     with open("products.csv", "r", encoding="utf-8") as file:
-#         data = csv.DictReader(file)  # Read each row as a dictionary.
+def import_players():
+    with open("players.csv", "r", encoding="utf-8") as file:
+        data = csv.DictReader(file)  # Read each row as a dictionary.
 
-#         for line in data:
-#             # Check if the category already exists
-#             possible_category = db.session.execute(
-#                 select(Category).where(Category.name == line["category"])
-#             ).scalar()
+        for line in data:
+            # Check if the team already exists
+            possible_team = db.session.execute(
+                select(Team).where(Team.name == line["team"])).scalar()
 
-#             if not possible_category:
-#                 category_obj = Category(name=line["category"])
-#                 db.session.add(category_obj)  # Add new category
-#             else:
-#                 category_obj = possible_category  # Reuse existing category
+            if not possible_team:
+                team_obj = Team(name=line["team"])
+                db.session.add(team_obj)  # Add new team
+            else:
+                category_obj = possible_team  # Reuse existing team
 
-#             # Create a new product linked to the category
-#             product = Product(
-#                 name=line["name"],
-#                 price=float(line["price"]),
-#                 inventory=line["available"],
-#                 category=category_obj
-#             )
-#             db.session.add(product)  # Add product to the session
+            # Create a new player linked to the category
+            player = Player(
+                name=line["name"],
+                age=int(line["age"]),
+                gamertag=line["gamertag"],
+                team=team_obj
+            )
+            db.session.add(player)  # Add product to the session
 
-#         db.session.commit()  # Save all new categories and products
+        db.session.commit()  # Save all new categories and products
 
-# def import_customers():
+# def import_matches():
 #     """Import customers from 'customers.csv' into the database."""
-#     with open("customers.csv", "r", encoding="utf-8") as file:
+#     with open("matches.csv", "r", encoding="utf-8") as file:
 #         data = csv.DictReader(file)
 
 #         for line in data:
@@ -118,9 +116,9 @@ if __name__ == "__main__":
         drop_tables()
     elif choice == "create":
         create_tables()
-    # elif choice == "import":
-    #     drop_tables()
-    #     create_tables()
-    #     import_products()
-    #     import_customers()
-    #     random_orders()
+    elif choice == "import":
+        drop_tables()
+        create_tables()
+        import_players()
+        # import_customers()
+        # random_orders()

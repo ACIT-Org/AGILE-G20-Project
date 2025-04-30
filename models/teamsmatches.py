@@ -2,12 +2,12 @@ from sqlalchemy.orm import DeclarativeBase, mapped_column, relationship
 from sqlalchemy import DECIMAL, Integer, String, ForeignKey
 from db import db
 
-class TeamsMatches(db.Model):
-    __tablename__ = "teams_matches"
+class TeamMatch(db.Model):
+    __tablename__ = "teamsmatches"
     id = mapped_column(Integer, primary_key=True)
     
-    teams = relationship('Teams')
+    teams = relationship('Team')
     teams_id = mapped_column(Integer, ForeignKey("teams.id"))
     
-    matches = relationship('Matches', back_populates='teams.id')
+    matches = relationship('Match', back_populates='teams')
     matches_id = mapped_column(Integer, ForeignKey("matches.id"))
