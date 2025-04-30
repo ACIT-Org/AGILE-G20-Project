@@ -22,6 +22,22 @@ def home():
 def product_view():
     statement = db.select(Match).order_by(Match.id)
     results = db.session.execute(statement).scalars()
+    return render_template("products.html", products=results)
+
+@app.route("/teams")
+def product_view():
+    statement = db.select(Match).order_by(Match.id)
+    results = db.session.execute(statement).scalars()
+    return render_template("products.html", products=results)
+
+@app.route(("/teams/<string:name>"))
+def category_detail(name):
+    stmt1 = db.select(Team).where(Team.name == name)
+    found_team = db.session.execute(stmt1).scalar()
+
+    stmt2 = db.select(Player).where(Player.team_id == found_team.id)
+    team_players = db.session.execute(stmt2).scalars()
+    return render_template("categorysort.html", category=team_players, name=name.capitalize())
 
 db.init_app(app)
 
