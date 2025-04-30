@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from models import Product, Customer, Order, ProductOrder
+from models import Teams, TeamsMatches, Players, Matches
 from db import db
 from app import app
 import sys
@@ -11,61 +11,116 @@ from datetime import timedelta
 # This file was used to read data from a CSV which we can use to put a bunch of data into our database after we create our tables
 # IGNORE THIS FILE FOR NOW
 
-def csv_reader(filename):
-    customer_list=[]
+def create_tables():
+    """Create all database tables based on the models."""
+    db.create_all()
 
-    if filename == "products.csv":
-        with open(filename, "r") as file:
-            content= csv.DictReader(file)
+def drop_tables():
+    """Drop all existing database tables."""
+    db.drop_all()
 
-            for product in content:
-                possible_category = db.session.execute(select(Category).where(Category.name == product["category"])).scalar()
-                if not possible_category:
-                    category_obj = Category(name=product["category"])
-                    db.session.add(category_obj)
-                else:
-                    category_obj = possible_category
-                    product = Product(name=product["name"], price=float(product["price"]), available=product["available"], category=category_obj)
-                    db.session.add(product)
+# ------------------ Data Import Functions ------------------
 
-    elif filename == "customers.csv":
-        with open(filename, "r") as file:
-            content= csv.DictReader(file)
-            for line in content:
-                customer_list.append(Customer(name=line["name"], phone=line['phone']))
+# def import_products():
+#     """Import products and categories from 'products.csv' into the database."""
+#     with open("products.csv", "r", encoding="utf-8") as file:
+#         data = csv.DictReader(file)  # Read each row as a dictionary.
 
-        for customer in customer_list:
-            db.session.add(customer)
-    db.session.commit() 
+#         for line in data:
+#             # Check if the category already exists
+#             possible_category = db.session.execute(
+#                 select(Category).where(Category.name == line["category"])
+#             ).scalar()
 
-def generate():
-    random_customer = db.session.execute(select(Customer).order_by(db.func.random())).scalar()
-    num_prods = random.randint(4, 6) 
-    random_prods = db.session.execute(select(Product).order_by(db.func.random()).limit(num_prods)).scalars()
+#             if not possible_category:
+#                 category_obj = Category(name=line["category"])
+#                 db.session.add(category_obj)  # Add new category
+#             else:
+#                 category_obj = possible_category  # Reuse existing category
 
-    random_time = dt.now().replace(microsecond=0) - timedelta(days=random.randint(1, 3), hours=random.randint(0, 15), minutes=random.randint(0, 30))
-    my_order = Order(customer=random_customer, created=random_time)
+#             # Create a new product linked to the category
+#             product = Product(
+#                 name=line["name"],
+#                 price=float(line["price"]),
+#                 inventory=line["available"],
+#                 category=category_obj
+#             )
+#             db.session.add(product)  # Add product to the session
 
-    for element in random_prods: 
-        print(element)
-        found_product = ProductOrder(product=element, quantity=random.randint(1, 5), order = my_order)
-        db.session.add(found_product)
+#         db.session.commit()  # Save all new categories and products
 
-    my_order.amount = my_order.calculate_total()
-    
+# def import_customers():
+#     """Import customers from 'customers.csv' into the database."""
+#     with open("customers.csv", "r", encoding="utf-8") as file:
+#         data = csv.DictReader(file)
 
+#         for line in data:
+#             customer = Customer(
+#                 name=line["name"],
+#                 phone=line["phone"]
+#             )
+#             db.session.add(customer)  # Add each customer
+
+#         db.session.commit()  # Save all new customers
+
+# # ------------------ Random Data Generation ------------------
+
+# def random_orders():
+#     """Generate random orders for testing purposes."""
+#     for _ in range(10):  # Create 10 random orders
+#         # Select a random customer
+#         random_customer = db.session.execute(
+#             select(Customer).order_by(func.random())
+#         ).scalar()
+
+#         # Select a random number of products (4–6)
+#         num_prods = randint(4, 6)
+#         random_prods = db.session.execute(
+#             select(Product).order_by(func.random()).limit(num_prods)
+#         ).scalars()
+
+#         # Generate a random creation timestamp within the past few days
+#         created_time = dt.now() - timedelta(
+#             days=randint(1, 3),
+#             hours=randint(0, 15),
+#             minutes=randint(0, 30)
+#         )
+
+#         # Create the order
+#         order = Order(
+#             customer=random_customer,
+#             created=created_time
+#         )
+
+#         # Create product-order entries for the order
+#         for prod in random_prods:
+#             product_order = ProductOrder(
+#                 order=order,
+#                 product=prod,
+#                 quantity=randint(4, 7)  # Random quantity per product
+#             )
+#             db.session.add(product_order)
+
+#     db.session.commit()  # Save all new orders and items
+
+# ------------------ Main Execution Block ------------------
 
 if __name__ == "__main__":
-     with app.app_context():
-        db.drop_all()
-        db.create_all()
-        
-        # csv_reader("products.csv")
-        # csv_reader("customers.csv")
+    # Ensure the user provided an action argument
+    if len(sys.argv) < 2:
+        print("usage: python main.py <action>")
+        sys.exit(1)
 
-        # for i in range(20):
-        #     generate() #20 orders get generated here
+    choice = sys.argv[1]  # The action: "drop", "create", or "import"
+    app.app_context().push()  # Push Flask app context so that 'db' can be accessed outside of server runtime
 
-        db.session.commit()
-
-
+    if choice == "drop":
+        drop_tables()
+    elif choice == "create":
+        create_tables()
+    # elif choice == "import":
+    #     drop_tables()
+    #     create_tables()
+    #     import_products()
+    #     import_customers()
+    #     random_orders()

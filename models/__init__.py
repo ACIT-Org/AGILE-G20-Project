@@ -1,7 +1,5 @@
-print("models init working")
-
-__all__ = ["Customer", "Product", "Order", "ProductOrder"]
-from .customer import Customer
-from .product import Product
-from .order import Order
-from .productorder import ProductOrder
+__all__ = ["Matches", "Players", "Teams", "TeamsMatches"]
+from .matches import Matches
+from .players import Players
+from .teams import Teams
+from .teamsmatches import TeamsMatches
