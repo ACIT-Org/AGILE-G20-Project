@@ -23,7 +23,7 @@ def home():
 def matches_view():
     statement = db.select(Match).order_by(Match.id)
     results = db.session.execute(statement).scalars()
-    return render_template("products.html", products=results)
+    return render_template("matches.html", matches=results)
 
 @app.route("/teams")
 def teams_view():
