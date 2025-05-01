@@ -9,7 +9,7 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <title>Joe mama store</title>
+    <title>Marvel Rivals TV</title>
     <style>
       table {
         width: 75%;
@@ -30,6 +30,10 @@
   <body>
     <main>
       <!-- ADD HEADERS HERE-->
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('teams_view') }}">Teams</a>
+      <a href="{{ url_for('players_view') }}">Players</a>
+      <a href="{{ url_for('matches_view') }}">Matches</a>
       {% block content %}
       <!-- This will be overridden by child templates -->
       {% endblock %}
