@@ -48,13 +48,13 @@ def import_players():
 # # ------------------ Random Data Generation ------------------
 
 def random_matches():
-    for _ in range(10):  # Create 10 random orders
+    for _ in range(10):  # Create 10 random matches
         # Select a random team
         random_team1 = db.session.execute(
             select(Team).order_by(db.func.random())).scalar()
         
         random_team2 = db.session.execute(
-            select(Team).where(Team != random_team1).order_by(db.func.random())).scalar()
+            select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
 
         teams =[]
         teams.append(random_team1)
@@ -73,13 +73,15 @@ def random_matches():
             minutes=randint(0, 30)
         )
 
-        # Create the order
+        # Create the match
         match = Match(
             winner=winning_team,
+            team1=random_team1.name,
+            team2=random_team2.name,
             time =created_time
         )
 
-        # Create product-order entries for the order
+        # Create matchteams entries for the order
         for team in teams:
             teams_matches = TeamMatch(
                 teams=team,
@@ -87,7 +89,7 @@ def random_matches():
             )
             db.session.add(teams_matches)
 
-    db.session.commit()  # Save all new orders and items
+    db.session.commit()  # Save all matches
 
 # ------------------ Main Execution Block ------------------
 
