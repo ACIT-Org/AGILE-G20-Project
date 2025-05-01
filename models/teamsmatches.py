@@ -1,5 +1,5 @@
-from sqlalchemy.orm import DeclarativeBase, mapped_column, relationship
-from sqlalchemy import DECIMAL, Integer, String, ForeignKey
+from sqlalchemy.orm import mapped_column, relationship
+from sqlalchemy import Integer, ForeignKey
 from db import db
 
 class TeamMatch(db.Model):

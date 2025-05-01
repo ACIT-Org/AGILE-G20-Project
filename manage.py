@@ -4,7 +4,6 @@ from db import db
 from app import app
 import sys
 import csv
-import random
 from datetime import datetime as dt
 from datetime import timedelta
 from random import randint 
