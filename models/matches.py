@@ -9,5 +9,8 @@ class Match(db.Model):
     winner = mapped_column(String)
     time = mapped_column(String)
     
-
-    teams = relationship('TeamMatch', back_populates='matches')
+    team1_id = mapped_column(Integer, ForeignKey("teams.id"))
+    team2_id = mapped_column(Integer, ForeignKey("teams.id"))
+    #need the foreign_keys attribute since we're referencing the same table twice
+    team1 = relationship("Team", foreign_keys=[team1_id], back_populates="as_team1_matches")
+    team2 = relationship("Team", foreign_keys=[team2_id], back_populates="as_team2_matches")
