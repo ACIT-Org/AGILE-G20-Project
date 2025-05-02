@@ -7,7 +7,8 @@ class Match(db.Model):
     
     id = mapped_column(Integer, primary_key=True)
     winner = mapped_column(String)
-    time = mapped_column(String)
+    play_date = mapped_column(db.DateTime, nullable=False, default=db.func.now())
+    map = mapped_column(String)
     
     team1_id = mapped_column(Integer, ForeignKey("teams.id"))
     team2_id = mapped_column(Integer, ForeignKey("teams.id"))

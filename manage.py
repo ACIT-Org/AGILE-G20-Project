@@ -69,17 +69,21 @@ def random_matches():
 
         # Generate a random match timestamp within the past few days
         created_time = dt.now() - timedelta(
-            days=randint(1, 3),
+            days=randint(-10, 10),
             hours=randint(0, 15),
             minutes=randint(0, 30)
         )
 
+        #random maps
+        maps = ["Ascent", "Haven", "Split", "Bind", "Icebox", "Breeze", "Fracture", "Pearl", "Sunset"]
+        random_map_index = randint(0, len(maps)-1)
         # Create the order
         match = Match(
             winner=winning_team,
-            time =created_time,
+            play_date =created_time,
             team1 = random_team1,
-            team2 = random_team2
+            team2 = random_team2,
+            map = maps[random_map_index]
         )
         db.session.add(match)
         # Create product-order entries for the order
