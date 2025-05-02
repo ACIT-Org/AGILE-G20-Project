@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from models import Team, TeamMatch, Player, Match
+from models import Team, Player, Match
 from db import db
 from app import app
 import sys
@@ -32,7 +32,7 @@ def import_players():
                 team_obj = Team(name=line["team"])
                 db.session.add(team_obj)  # Add new team
             else:
-                category_obj = possible_team  # Reuse existing team
+                team_obj = possible_team  # Reuse existing team
 
             # Create a new player linked to the category
             player = Player(
@@ -56,9 +56,9 @@ def random_matches():
         random_team2 = db.session.execute(
             select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
 
-        teams =[]
-        teams.append(random_team1)
-        teams.append(random_team2)
+        # teams =[]
+        # teams.append(random_team1)
+        # teams.append(random_team2)
 
         randnum = randint(1, 2)
         if randnum == 1:
@@ -68,26 +68,30 @@ def random_matches():
 
         # Generate a random match timestamp within the past few days
         created_time = dt.now() - timedelta(
-            days=randint(1, 3),
+            days=randint(-10, 10),
             hours=randint(0, 15),
             minutes=randint(0, 30)
         )
 
-        # Create the match
+        #random maps
+        maps = ["Ascent", "Haven", "Split", "Bind", "Icebox", "Breeze", "Fracture", "Pearl", "Sunset"]
+        random_map_index = randint(0, len(maps)-1)
+        # Create the order
         match = Match(
             winner=winning_team,
-            team1=random_team1.name,
-            team2=random_team2.name,
-            time =created_time
+            play_date =created_time,
+            team1 = random_team1,
+            team2 = random_team2,
+            map = maps[random_map_index]
         )
-
-        # Create matchteams entries for the order
-        for team in teams:
-            teams_matches = TeamMatch(
-                teams=team,
-                matches=match,
-            )
-            db.session.add(teams_matches)
+        db.session.add(match)
+        # Create product-order entries for the order
+        # for team in teams:
+        #     teams_matches = TeamMatch(
+        #         teams=team,
+        #         matches=match,
+        #     )
+        #     db.session.add(teams_matches)
 
     db.session.commit()  # Save all matches
 
