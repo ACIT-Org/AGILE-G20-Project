@@ -55,7 +55,7 @@ def random_matches():
             select(Team).order_by(db.func.random())).scalar()
         
         random_team2 = db.session.execute(
-            select(Team).where(Team != random_team1).order_by(db.func.random())).scalar()
+            select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
 
         # teams =[]
         # teams.append(random_team1)
