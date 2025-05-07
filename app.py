@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 from pathlib import Path
-from models import Match, Player, Team
+from models import Match, Player, Team, PlayerStats
 from db import db
 from routes.api import api_bp
 from sqlalchemy import desc
@@ -24,6 +24,12 @@ def matches_view():
     statement = db.select(Match).order_by(Match.id)
     results = db.session.execute(statement).scalars()
     return render_template("matches.html", matches=results)
+
+@app.route("/matches/<int:id>")
+def matches_details():
+    statement = db.select(PlayerStats).where(PlayerStats.pstat_id == id)
+    matchstats = db.session.execute(statement).scalar()
+    return render_template("match_Details.html", stats=matchstats)
 
 @app.route("/teams")
 def teams_view():
