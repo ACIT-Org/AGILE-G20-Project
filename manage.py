@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from models import Team, Player, Match
+from models import Team, Player, Match, PlayerStats
 from db import db
 from app import app
 import sys
@@ -80,6 +80,37 @@ def random_matches():
             team2 = random_team2,
             map = maps[random_map_index]
         )
+        db.session.add(match)
+
+        for player in random_team1.players:
+            playerstat = PlayerStats(
+                player_id=player.id,
+                match_id=match.id, 
+                kills = randint(0 , 50),
+                deaths = randint(0 , 50),
+                assists = randint(0 , 50),
+                damageDealt = randint(0 , 50000),
+                damageBlocked = randint(0 , 30000),
+                healing = randint(0 , 40000),
+                accuracy = randint(0 , 100),
+                characterplayed = "Winter Soldier"
+            )
+            db.session.add(playerstat)
+
+        for player in random_team2.players:
+            playerstat = PlayerStats(
+                player_id=player.id,
+                match_id=match.id, 
+                kills = randint(0 , 50),
+                deaths = randint(0 , 50),
+                assists = randint(0 , 50),
+                damageDealt = randint(0 , 50000),
+                damageBlocked = randint(0 , 30000),
+                healing = randint(0 , 40000),
+                accuracy = randint(0 , 100),
+                characterplayed = "Winter Soldier"
+            )
+            db.session.add(playerstat)
         db.session.add(match)
 
     db.session.commit()  # Save all matches
