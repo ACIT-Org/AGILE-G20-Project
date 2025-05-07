@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from models import Team, Player, Match, PlayerStats
+from models import Team, Player, Match, PlayerStats, Maps, Characters
 from db import db
 from app import app
 import sys
@@ -45,6 +45,30 @@ def import_players():
 
         db.session.commit()  
 
+def import_maps():
+    with open("maps.csv", "r", encoding="utf-8") as file:
+        data = csv.DictReader(file)  # Read each row as a dictionary.
+
+        for line in data:
+            map = Maps(
+                name=line["name"]
+            )
+            db.session.add(map) 
+
+        db.session.commit()  
+
+def import_characters():
+    with open("characters.csv", "r", encoding="utf-8") as file:
+        data = csv.DictReader(file)  # Read each row as a dictionary.
+
+        for line in data:
+            character = Characters(
+                name=line["name"],
+                role=line["role"]
+            )
+            db.session.add(character) 
+
+        db.session.commit()  
 # # ------------------ Random Data Generation ------------------
 
 def random_matches():
@@ -70,19 +94,20 @@ def random_matches():
         )
 
         #random maps
-        maps = ["Central Park", "Hall of Djalia", "Symbiotic Surface", "Shin-Shibuya", "Midtown", "Spider-Islands", "Yggdrasil Path", "Birin T'challa", "Hell's Heaven", "Krakoa", "Royal Palace"]
-        random_map_index = randint(0, len(maps)-1)
+        random_map = db.session.execute(
+            select(Maps).order_by(db.func.random())).scalar()
         # Create the order
         match = Match(
             winner=winning_team,
             play_date =created_time,
             team1 = random_team1,
             team2 = random_team2,
-            map = maps[random_map_index]
+            map = random_map.name
         )
         db.session.add(match)
 
         for player in random_team1.players:
+            random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
             playerstat = PlayerStats(
                 player_id=player.id,
                 match_id=match.id, 
@@ -93,11 +118,12 @@ def random_matches():
                 damageBlocked = randint(0 , 30000),
                 healing = randint(0 , 40000),
                 accuracy = randint(0 , 100),
-                characterplayed = "Winter Soldier"
+                characterplayed = random_character.name
             )
             db.session.add(playerstat)
 
         for player in random_team2.players:
+            random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
             playerstat = PlayerStats(
                 player_id=player.id,
                 match_id=match.id, 
@@ -108,7 +134,7 @@ def random_matches():
                 damageBlocked = randint(0 , 30000),
                 healing = randint(0 , 40000),
                 accuracy = randint(0 , 100),
-                characterplayed = "Winter Soldier"
+                characterplayed = random_character.name
             )
             db.session.add(playerstat)
         db.session.add(match)
@@ -134,4 +160,6 @@ if __name__ == "__main__":
         drop_tables()
         create_tables()
         import_players()
+        import_maps()
+        import_characters()
         random_matches()
