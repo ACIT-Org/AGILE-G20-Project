@@ -74,7 +74,7 @@ def random_matches():
         )
 
         #random maps
-        maps = ["Ascent", "Haven", "Split", "Bind", "Icebox", "Breeze", "Fracture", "Pearl", "Sunset"]
+        maps = ["Central Park", "Hall of Djalia", "Symbiotic Surface", "Shin-Shibuya", "Midtown", "Spider-Islands", "Yggdrasil Path", "Birin T'challa", "Hell's Heaven", "Krakoa", "Royal Palace"]
         random_map_index = randint(0, len(maps)-1)
         # Create the order
         match = Match(
