@@ -56,10 +56,6 @@ def random_matches():
         random_team2 = db.session.execute(
             select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
 
-        # teams =[]
-        # teams.append(random_team1)
-        # teams.append(random_team2)
-
         randnum = randint(1, 2)
         if randnum == 1:
             winning_team = random_team1.name
@@ -85,13 +81,6 @@ def random_matches():
             map = maps[random_map_index]
         )
         db.session.add(match)
-        # Create product-order entries for the order
-        # for team in teams:
-        #     teams_matches = TeamMatch(
-        #         teams=team,
-        #         matches=match,
-        #     )
-        #     db.session.add(teams_matches)
 
     db.session.commit()  # Save all matches
 
