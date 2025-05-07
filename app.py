@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 from pathlib import Path
-# from models import Product, Customer, Category, Order
+from models import Match, Player, Team
 from db import db
 from routes.api import api_bp
 from sqlalchemy import desc
@@ -10,15 +10,47 @@ from datetime import timedelta
 app = Flask(__name__)
 
 # This will make Flask use a 'sqlite' database with the filename provided
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///i_copy_pasted_this.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 # This will make Flask store the database file in the path provided
 app.instance_path = Path(".").resolve()
+db.init_app(app)
 
 @app.route("/")
 def home():
  return render_template("home.html", my_list=["Tim", "Bob", "Alice"])
 
-db.init_app(app)
+@app.route("/matches")
+def matches_view():
+    statement = db.select(Match).order_by(Match.id)
+    results = db.session.execute(statement).scalars()
+    return render_template("matches.html", matches=results)
+
+@app.route("/teams")
+def teams_view():
+    statement = db.select(Team).order_by(Team.id)
+    results = db.session.execute(statement).scalars()
+    return render_template("teams.html", teams=results)
+
+@app.route(("/teams/<string:name>"))
+def team_name(name):
+    stmt1 = db.select(Team).where(Team.name == name)
+    found_team = db.session.execute(stmt1).scalar()
+
+    stmt2 = db.select(Player).where(Player.team_id == found_team.id)
+    team_players = db.session.execute(stmt2).scalars()
+    return render_template("team_details.html", team=team_players, name = ' '.join([word.capitalize() for word in name.split()]))
+
+@app.route("/players")
+def players_view():
+    statement = db.select(Player).order_by(Player.id)
+    results = db.session.execute(statement).scalars()
+    return render_template("players.html", players=results)
+
+@app.route(("/players/<int:id>"))
+def player_id(id):
+    statement = db.select(Player).where(Player.id == id)
+    player = db.session.execute(statement).scalar()
+    return render_template("playerid.html", player=player)
 
 app.register_blueprint(api_bp, url_prefix="/api")
 

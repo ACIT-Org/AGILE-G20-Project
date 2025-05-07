@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+  <body>
+    <h2>{{ name }} Details</h2>
+    <table>
+      <th>Players</th>
+        <th>Name</th>
+        <th>Age</th>
+      </tr>
+      {% for row in team %}
+      <tr>
+        <td><a href="{{ url_for('player_id', id=row.id) }}"
+          >{{ row.gamertag }}</td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.age }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    
+    <h3>Team Winrate:</h3>
+    <p>*not implemented yet*</p>
+
+    <h3>{{ name }} Recent Matches:</h3>
+    <p>*not implemented yet*</p>
+  </body>
+{% endblock %}

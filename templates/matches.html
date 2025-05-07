@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block content %} 
+<body>
+    <h1>Matches</h1>
+    <table>
+      <tr>
+        <th>Match ID</th>
+        <th>Team 1</th>
+        <th>Team 2</th>
+        <th>Winner</th>
+        <th>Played Date</th>
+        <th>Map</th>
+        
+      </tr>
+      {% for match in matches %}
+      <tr>
+        <td>{{ match.id }}</td>
+        <td>{{ match.team1.name }}</td>
+        <td>{{ match.team2.name }}</td>
+        <td>{{ match.winner }}</td>
+        <td>{{ match.play_date }}</td>
+        <td>{{ match.map }}</td>
+
+      </tr>
+      {% endfor %}
+
+    </table>
+  </body>
+{% endblock %}

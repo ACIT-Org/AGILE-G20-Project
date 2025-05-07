@@ -2,19 +2,21 @@
 {% block content %}
 
   <body>
-    <h1>Customers</h1>
+    <h1>Players</h1>
     <table>
         <th>Id</th>
         <th>Name</th>
-        <th>Phone</th>
+        <th>Username</th>
+        <th>Team</th>
       </tr>
-      {% for row in customers %}
+      {% for row in players %}
       <tr>
         <td>{{ row.id }}</td>
-        <td><a href="{{ url_for('customer_id', id=row.id) }}"
+        <td><a href="{{ url_for('player_id', id=row.id) }}"
           >{{ row.name }}</a
         ></td>
-        <td>{{ row.phone }}</td>
+        <td>{{ row.gamertag }}</td>
+        <td>{{ row.team.name }}</td>
       </tr>
       {% endfor %}
 
