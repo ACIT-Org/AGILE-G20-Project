@@ -72,7 +72,7 @@ def import_characters():
 # # ------------------ Random Data Generation ------------------
 
 def random_matches():
-    for _ in range(10):  # Create 10 random matches
+    for _ in range(30):  # Create 10 random matches
         # Select a random team
         random_team1 = db.session.execute(
             select(Team).order_by(db.func.random())).scalar()
@@ -80,11 +80,11 @@ def random_matches():
         random_team2 = db.session.execute(
             select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
 
-        randnum = randint(1, 2)
-        if randnum == 1:
-            winning_team = random_team1.name
-        else:
-            winning_team = random_team2.name
+        # randnum = randint(1, 2)
+        # if randnum == 1:
+        #     winning_team = random_team1.name
+        # else:
+        #     winning_team = random_team2.name
 
         # Generate a random match timestamp within the past few days
         created_time = dt.now() - timedelta(
@@ -98,7 +98,7 @@ def random_matches():
             select(Maps).order_by(db.func.random())).scalar()
         # Create the order
         match = Match(
-            winner=winning_team,
+            # winner=winning_team,
             play_date =created_time,
             team1 = random_team1,
             team2 = random_team2,
