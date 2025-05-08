@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 from pathlib import Path
-from models import Match, Player, Team
+from models import Match, Player, Team, PlayerStats
 from db import db
 from routes.api import api_bp
 from sqlalchemy import desc, or_
@@ -27,6 +27,13 @@ def matches_view():
     statement = db.select(Match).where(Match.completed == True).order_by(Match.play_date.desc())
     results2 = db.session.execute(statement).scalars()
     return render_template("matches.html", upcoming_matches=results, completed_matches=results2)
+
+@app.route("/matches/<int:id>")
+def matches_details(id):
+    statement = db.select(Match).where(Match.id == id)
+    match = db.session.execute(statement).scalar()
+    return render_template("match_details.html",matches=match,teams=Team.query.all(),players=Player.query.all(),PlayerStats=PlayerStats.query.all())
+
 
 @app.route("/teams")
 def teams_view():
