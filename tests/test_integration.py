@@ -60,9 +60,9 @@ def test_match_not_completed(test_client):
     db.session.add(match)
     db.session.commit()
 
-    # Run your method to mark matches completed
+
     match.completed_check()
 
-    # Assert the match is completed and has a winner
+    # Assert the match is not completed and has no winner
     assert match.completed != True
-    assert match.winner == None  # Ensure a winner name is assigned
+    assert match.winner == None  
