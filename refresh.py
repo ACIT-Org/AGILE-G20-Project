@@ -12,8 +12,8 @@ def check_all_matches():
 
         print("Match checking being refreshed...")
         print(len(results))
-        for match in results:
-            print("asdf")
+        for i, match in enumerate(results):
+            print(i)
             match.completed_check()
         db.session.commit()
 

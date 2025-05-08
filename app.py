@@ -21,10 +21,10 @@ def home():
 
 @app.route("/matches")
 def matches_view():
-    statement = db.select(Match).where(Match.completed == False).order_by(Match.id)
+    statement = db.select(Match).where(Match.completed == False).order_by(Match.play_date)
     results = db.session.execute(statement).scalars()
 
-    statement = db.select(Match).where(Match.completed == True).order_by(Match.id)
+    statement = db.select(Match).where(Match.completed == True).order_by(Match.play_date.desc())
     results2 = db.session.execute(statement).scalars()
     return render_template("matches.html", upcoming_matches=results, completed_matches=results2)
 
@@ -46,7 +46,7 @@ def team_name(name):
     db.select(Match).where(Match.completed == False)
     .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
     # .join(Player, Player.team_id == Team.id)
-    .where(Team.name == name)
+    .where(Team.name == name).order_by(Match.play_date)
 )
     upcoming = db.session.execute(upcoming_stmt).scalars()
 
@@ -54,7 +54,7 @@ def team_name(name):
     db.select(Match).where(Match.completed == True)
     .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
     # .join(Player, Player.team_id == Team.id)
-    .where(Team.name == name)
+    .where(Team.name == name).order_by(Match.play_date.desc())
 )
     completed = db.session.execute(completed_stmt).scalars()
     
@@ -82,6 +82,7 @@ def player_id(id):
     .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
     .join(Player, Player.team_id == Team.id)
     .where(Player.id == id)
+    .order_by(Match.play_date)
 )
     upcoming = db.session.execute(upcoming_stmt).scalars()
 
@@ -90,6 +91,7 @@ def player_id(id):
     .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
     .join(Player, Player.team_id == Team.id)
     .where(Player.id == id)
+    .order_by(Match.play_date.desc())
 )
     completed = db.session.execute(completed_stmt).scalars()
     return render_template("playerid.html", player=player, upcoming_matches = upcoming, completed_matches = completed)
