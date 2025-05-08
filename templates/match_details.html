@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Match Stats:</h2>
+  <h1>Score: {{ matches.winner }}</h1>
+  <h1>Map: {{ matches.map }}</h1>
+  <h1>Date: {{ matches.playdate }}</h1>
+
+  {% for team in teams %}
+    {% if team.id == matches.team1_id or team.id == matches.team2_id %}
+      <h2>Team: {{ team.name }}</h2>
+      <table>
+        <tr>
+          <th>Player</th>
+          <th>Kills</th>
+          <th>Deaths</th>
+          <th>Assists</th>
+          <th>Damage Dealt</th>
+          <th>Damage Blocked</th>
+          <th>Healing</th>
+          <th>Accuracy</th>
+          <th>Character Played</th>
+        </tr>
+        {% for player in players %}
+          {% if player.team == team.name %}
+            {% for stat in PlayerStats %}
+              {% if stat.playerid == player.id %}
+                <tr>
+                  <td>{{ player.name }}</td>
+                  <td>{{ stat.kills }}</td>
+                  <td>{{ stat.deaths }}</td>
+                  <td>{{ stat.assists }}</td>
+                  <td>{{ stat.damageDealt }}</td>
+                  <td>{{ stat.damageBlocked }}</td>
+                  <td>{{ stat.healing }}</td>
+                  <td>{{ stat.accuracy }}%</td>
+                  <td>{{ stat.characterPlayed }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </table>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

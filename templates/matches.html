@@ -3,21 +3,45 @@
   <h1>Matches</h1>
   <table>
     <tr>
-      <th>Match ID</th>
+      <!-- <th>Match ID</th> -->
       <th>Team 1</th>
       <th>Team 2</th>
-      <th>Winner</th>
+
       <th>Played Date</th>
       <th>Map</th>
     </tr>
-    {% for match in matches %}
+    {% for match in upcoming_matches %}
     <tr>
-      <td>{{ match.id }}</td>
+      <!-- <td>{{ match.id }}</td> -->
       <td>{{ match.team1.name }}</td>
       <td>{{ match.team2.name }}</td>
-      <td>{{ match.winner }}</td>
-      <td>{{ match.play_date }}</td>
+
+      <td>{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</td>
       <td>{{ match.map }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h1>Completed Matches</h1>
+  <table>
+    <tr>
+      <!-- <th>Match ID</th> -->
+      <th>Team 1</th>
+      <th>Team 2</th>
+
+      <th>Played Date</th>
+      <th>Map</th>
+      <th>Winner</th>
+    </tr>
+    {% for match in completed_matches %}
+    <tr>
+      <!-- <td>{{ match.id }}</td> -->
+      <td>{{ match.team1.name }}</td>
+      <td>{{ match.team2.name }}</td>
+
+      <td>{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</td>
+      <td>{{ match.map }}</td>
+      <td>{{ match.winner }}</td>
     </tr>
     {% endfor %}
   </table>
