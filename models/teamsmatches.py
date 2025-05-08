@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-from sqlalchemy.orm import mapped_column, relationship
-from sqlalchemy import Integer, ForeignKey
-from db import db
-=======
 # from sqlalchemy.orm import DeclarativeBase, mapped_column, relationship
 # from sqlalchemy import DECIMAL, Integer, String, ForeignKey
 # from db import db
->>>>>>> dev
 
 # class TeamMatch(db.Model):
 #     __tablename__ = "team_matches"
