@@ -3,6 +3,7 @@ from sqlalchemy import Integer, String, ForeignKey, Boolean
 from db import db
 from datetime import datetime as dt
 from datetime import timedelta
+from random import randint 
 
 
 
@@ -20,10 +21,22 @@ class Match(db.Model):
     #need the foreign_keys attribute since we're referencing the same table twice
     team1 = relationship("Team", foreign_keys=[team1_id], back_populates="as_team1_matches")
     team2 = relationship("Team", foreign_keys=[team2_id], back_populates="as_team2_matches")
+    
+    def complete_match(self):
+        randnum = randint(1, 2)
+        if randnum == 1:
+            winning_team = self.team1
+        else:
+            winning_team = self.team2
+
+        self.winner = winning_team.name
+        self.completed = True
+
+        
 
     def completed_check(self):
         if not self.completed:
             # check if match time had passed
             if self.play_date < dt.utcnow() - timedelta(hours=0):
-                self.completed = True
+                self.complete_match()
                 db.session.commit()
