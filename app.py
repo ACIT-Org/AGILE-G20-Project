@@ -1,9 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, request
 from pathlib import Path
-from models import Match, Player, Team
+from models import Match, Player, Team, PlayerStats
 from db import db
 from routes.api import api_bp
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 from datetime import datetime as dt
 from datetime import timedelta
 
@@ -21,9 +21,19 @@ def home():
 
 @app.route("/matches")
 def matches_view():
-    statement = db.select(Match).order_by(Match.id)
+    statement = db.select(Match).where(Match.completed == False).order_by(Match.play_date)
     results = db.session.execute(statement).scalars()
-    return render_template("matches.html", matches=results)
+
+    statement = db.select(Match).where(Match.completed == True).order_by(Match.play_date.desc())
+    results2 = db.session.execute(statement).scalars()
+    return render_template("matches.html", upcoming_matches=results, completed_matches=results2)
+
+@app.route("/matches/<int:id>")
+def matches_details(id):
+    statement = db.select(Match).where(Match.id == id)
+    match = db.session.execute(statement).scalar()
+    return render_template("match_details.html",matches=match,teams=Team.query.all(),players=Player.query.all(),PlayerStats=PlayerStats.query.all())
+
 
 @app.route("/teams")
 def teams_view():
@@ -38,7 +48,30 @@ def team_name(name):
 
     stmt2 = db.select(Player).where(Player.team_id == found_team.id)
     team_players = db.session.execute(stmt2).scalars()
-    return render_template("team_details.html", team=team_players, name = ' '.join([word.capitalize() for word in name.split()]))
+
+    upcoming_stmt = (
+    db.select(Match).where(Match.completed == False)
+    .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
+    # .join(Player, Player.team_id == Team.id)
+    .where(Team.name == name).order_by(Match.play_date)
+)
+    upcoming = db.session.execute(upcoming_stmt).scalars()
+
+    completed_stmt = (
+    db.select(Match).where(Match.completed == True)
+    .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
+    # .join(Player, Player.team_id == Team.id)
+    .where(Team.name == name).order_by(Match.play_date.desc())
+)
+    completed = db.session.execute(completed_stmt).scalars()
+    
+    return render_template(
+       "team_details.html", 
+       team=team_players, 
+       name = ' '.join([word.capitalize() for word in name.split()]),
+       upcoming_matches = upcoming, 
+       completed_matches = completed
+       )
 
 @app.route("/players")
 def players_view():
@@ -50,7 +83,25 @@ def players_view():
 def player_id(id):
     statement = db.select(Player).where(Player.id == id)
     player = db.session.execute(statement).scalar()
-    return render_template("playerid.html", player=player)
+
+    upcoming_stmt = (
+    db.select(Match).where(Match.completed == False)
+    .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
+    .join(Player, Player.team_id == Team.id)
+    .where(Player.id == id)
+    .order_by(Match.play_date)
+)
+    upcoming = db.session.execute(upcoming_stmt).scalars()
+
+    completed_stmt = (
+    db.select(Match).where(Match.completed == True)
+    .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
+    .join(Player, Player.team_id == Team.id)
+    .where(Player.id == id)
+    .order_by(Match.play_date.desc())
+)
+    completed = db.session.execute(completed_stmt).scalars()
+    return render_template("playerid.html", player=player, upcoming_matches = upcoming, completed_matches = completed)
 
 app.register_blueprint(api_bp, url_prefix="/api")
 

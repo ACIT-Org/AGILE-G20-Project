@@ -3,7 +3,7 @@
 
   <body>
     <h1>Players</h1>
-    <table>
+    <table id="players">
         <th>Id</th>
         <th>Name</th>
         <th>Username</th>
@@ -12,9 +12,7 @@
       {% for row in players %}
       <tr>
         <td>{{ row.id }}</td>
-        <td><a href="{{ url_for('player_id', id=row.id) }}"
-          >{{ row.name }}</a
-        ></td>
+        <td><a href="{{ url_for('player_id', id=row.id) }}">{{ row.name }}</a></td>
         <td>{{ row.gamertag }}</td>
         <td>{{ row.team.name }}</td>
       </tr>
