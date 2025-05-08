@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime, timedelta
 from unittest.mock import patch
-from models import Match, Team 
+from models import Match, Team, Player 
 
 
 @pytest.fixture
@@ -46,3 +46,13 @@ def test_complete_match_team2_wins(mock_randint, test_team1,test_team2):
     assert mock_randint.called
     assert match.completed is True
     assert match.winner == "Beta"  # Because randint = 2, team2 wins
+    
+
+def isinterger():
+    players = Player(id = 1)
+    assert type(players.id) == int()
+    
+    with pytest.raises(TypeError):
+        players.id="hello"
+        
+ 
