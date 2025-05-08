@@ -29,7 +29,7 @@ class Match(db.Model):
         else:
             winning_team = self.team2
 
-        self.winner = winning_team
+        self.winner = winning_team.name
         self.completed = True
 
         
@@ -37,6 +37,6 @@ class Match(db.Model):
     def completed_check(self):
         if not self.completed:
             # check if match time had passed
-            if self.play_date < dt.utcnow() - timedelta(hours=0):
+            if self.play_date < dt.now() - timedelta(hours=0):
                 self.complete_match()
                 db.session.commit()
