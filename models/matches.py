@@ -29,7 +29,7 @@ class Match(db.Model):
         else:
             winning_team = self.team2
 
-        self.winner = winning_team
+        self.winner = winning_team.name
         self.completed = True
 
         
