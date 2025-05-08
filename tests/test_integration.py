@@ -1,13 +1,8 @@
 import pytest
 from app import app  # Absolute import
 from db import db
-from models.teams import Team
-from models.players import Player
-from models.matches import Match
+from models import Team, Player, Match
 from datetime import datetime, timedelta, timezone
-
-
-
 
 @pytest.fixture()
 def setup_database():
