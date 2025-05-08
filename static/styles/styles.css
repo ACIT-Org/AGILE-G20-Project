@@ -5,11 +5,12 @@ Dark Grey: #33334b */
 
 /* headings */
 h1{
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: #f1d131;
     text-align: center;
     text-transform: uppercase;
     font-family: cal sans;
+    padding-top: 4rem;
 
 }
 h2,h3,h4,h5,h6{
@@ -30,6 +31,26 @@ h4{
     padding:4rem;
     
 }
+#team_id h1{
+    padding: 0;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+#players_id h1{
+    padding: 0;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+#matches h1{
+    padding: 0;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+#team_details h2{
+    padding: 0;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
 body{
     background-color: #33334b;
 }
@@ -41,7 +62,7 @@ nav{
     justify-content: center;
 }
 a{
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color:#f1d131;
     text-decoration: none;
     padding: 2rem;
@@ -63,6 +84,9 @@ a:hover{
     font-size: 1.3rem;
     font-family: comic relief;
 }
+#player_single h2{
+    font-size: 2.4rem;
+}
 /* body font */
 p{
     color: #e9eaec;
@@ -80,10 +104,15 @@ table {
     /* Outer border */
     margin-left: auto;
     margin-right: auto;
-    
-
+    padding-bottom: 2rem;
+  
 }
-
+#matches table{
+    margin-bottom: 4rem;
+}
+#players{
+    margin-bottom:  4rem;
+}
 th,
 td {
     border: 2px solid #f1d131;
@@ -96,6 +125,6 @@ td {
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #1a2238;
 }
 
