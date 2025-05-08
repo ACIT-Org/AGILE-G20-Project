@@ -3,7 +3,7 @@ from pathlib import Path
 from models import Match, Player, Team
 from db import db
 from routes.api import api_bp
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 from datetime import datetime as dt
 from datetime import timedelta
 
@@ -21,9 +21,12 @@ def home():
 
 @app.route("/matches")
 def matches_view():
-    statement = db.select(Match).order_by(Match.id)
+    statement = db.select(Match).where(Match.completed == False).order_by(Match.id)
     results = db.session.execute(statement).scalars()
-    return render_template("matches.html", matches=results)
+
+    statement = db.select(Match).where(Match.completed == True).order_by(Match.id)
+    results2 = db.session.execute(statement).scalars()
+    return render_template("matches.html", upcoming_matches=results, completed_matches=results2)
 
 @app.route("/teams")
 def teams_view():
@@ -50,7 +53,23 @@ def players_view():
 def player_id(id):
     statement = db.select(Player).where(Player.id == id)
     player = db.session.execute(statement).scalar()
-    return render_template("playerid.html", player=player)
+
+    upcoming_stmt = (
+    db.select(Match).where(Match.completed == False)
+    .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
+    .join(Player, Player.team_id == Team.id)
+    .where(Player.id == id)
+)
+    upcoming = db.session.execute(upcoming_stmt).scalars()
+
+    completed_stmt = (
+    db.select(Match).where(Match.completed == True)
+    .join(Team, or_(Match.team1_id == Team.id, Match.team2_id == Team.id))
+    .join(Player, Player.team_id == Team.id)
+    .where(Player.id == id)
+)
+    completed = db.session.execute(completed_stmt).scalars()
+    return render_template("playerid.html", player=player, upcoming_matches = upcoming, completed_matches = completed)
 
 app.register_blueprint(api_bp, url_prefix="/api")
 
