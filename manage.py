@@ -80,12 +80,6 @@ def random_matches():
         random_team2 = db.session.execute(
             select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
 
-        # randnum = randint(1, 2)
-        # if randnum == 1:
-        #     winning_team = random_team1.name
-        # else:
-        #     winning_team = random_team2.name
-
         # Generate a random match timestamp within the past few days
         created_time = dt.now() - timedelta(
             days=randint(-10, 10),
