@@ -35,12 +35,6 @@ def matches_details(id):
     return render_template("match_details.html",matches=match,teams=Team.query.all(),players=Player.query.all(),PlayerStats=PlayerStats.query.all())
 
 
-@app.route("/matches/<int:id>")
-def matches_details():
-    statement = db.select(PlayerStats).where(PlayerStats.pstat_id == id)
-    matchstats = db.session.execute(statement).scalar()
-    return render_template("match_Details.html", stats=matchstats)
-
 @app.route("/teams")
 def teams_view():
     statement = db.select(Team).order_by(Team.id)
