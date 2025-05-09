@@ -1,8 +1,12 @@
 import pytest
-from app import app  # Absolute import
+from unittest.mock import patch, mock_open
+from app import app
 from db import db
-from models import Team, Player, Match
+from models import Team, Player, Maps, Characters, Match, PlayerStats
 from datetime import datetime, timedelta, timezone
+import csv
+from manage import import_players, import_maps, import_characters, random_matches
+
 
 @pytest.fixture()
 def setup_database():
@@ -122,3 +126,35 @@ def test_match_view_to_view_one_player(client):
     response = client.get(f"/players/{player.id}")
     assert response.status_code == 200
     assert b"Jane Smith" in response.data
+
+def test_import_players(setup_database):
+    fake_data="name,age,gamertag,team\nAlice,22,Alicorn,TeamA\n"
+    mocked_open = mock_open(read_data=fake_data)
+
+    with patch("builtins.open",mocked_open):
+        import_players()
+
+    player = db.session.query(Player).first()
+    team = db.session.query(Team).first()
+    assert player is not None
+    assert team.name == "TeamA"
+    assert player.team_id == team.id
+
+def test_import_maps(setup_database):
+    fake_data="name\nArena1"
+    mocked_open = mock_open(read_data=fake_data)
+
+    with patch("builtins.open",mocked_open):
+        import_maps()
+    map = db.session.query(Maps).first()
+    assert map is not None
+    assert map.name == "Arena1"
+
+def test_import_characters(setup_database):
+    fake_data="name,role\nWarrior,Tank"
+    mocked_open = mock_open(read_data=fake_data)
+    with patch("builtins.open",mocked_open):
+        import_characters()
+    character = db.session.query(Characters).first()
+    assert character is not None
+    assert character.role == "Tank"

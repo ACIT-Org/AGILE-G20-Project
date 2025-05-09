@@ -4,127 +4,120 @@ White: #e9eaec
 Dark Grey: #33334b */
 
 /* headings */
-h1{
-    font-size: 2.8rem;
-    color: #f1d131;
-    text-align: center;
-    text-transform: uppercase;
-    font-family: cal sans;
-    padding-top: 4rem;
+
+h1 {
+  font-size: 2.5rem;
+  color: #f1d131;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: cal sans;
 
 }
+
 h2,h3,h4,h5,h6{
     color: #f1d131;
     font-size: 1.5rem;
     font-family: cal sans;
 }
-h2{
-    text-align: center;
-    padding-top: 2rem;
-    font-size: 2rem;
+h2 {
+  text-align: center;
+  padding-top: 2rem;
+  font-size: 2rem;
 }
-h3{
-    padding: 4rem;
-   
+h3 {
+  padding: 4rem;
 }
-h4{
-    padding:4rem;
-    
+h4 {
+  padding: 4rem;
 }
-#team_id h1{
-    padding: 0;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
-}
-#players_id h1{
-    padding: 0;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
-}
-#matches h1{
-    padding: 0;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
-}
-#team_details h2{
-    padding: 0;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
-}
-body{
-    background-color: #33334b;
+
+body {
+  background-color: #33334b;
 }
 /* navigation */
-nav{
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: center;
+nav {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  margin-bottom: 1.5rem; 
 }
-a{
-    font-size: 1.4rem;
-    color:#f1d131;
-    text-decoration: none;
-    padding: 2rem;
-    font-family: comic relief;
-   
+a {
+  font-size: 1.2rem;
+  color: #f1d131;
+  text-decoration: none;
+  padding: 2rem;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-a:hover{
-    color: #e9eaec;
+
+nav a {
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border: 2px solid #f1d131;
+    border-radius: 10px;
+    background-color: transparent;
+    display: inline-block;
+    transition: all 0.3s ease;
+    margin: 0 0.5rem;
+  }
+a:hover {
+  color: #e9eaec;
+  
 }
-#matches a{
-    font-size: 1.3rem;
-    font-family: comic relief;
+#matches a {
+  font-size: 1.3rem;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
-#players a{
-    font-size: 1.3rem;
-    font-family: comic relief;
+#players a {
+  font-size: 1.3rem;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
-#teams a{
-    font-size: 1.3rem;
-    font-family: comic relief;
+#teams a {
+  font-size: 1.3rem;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 #player_single h2{
     font-size: 2.4rem;
 }
 /* body font */
-p{
-    color: #e9eaec;
-    font-size: 1.3rem;
-    padding-left: 4rem;
-    font-family: comic relief;
+p {
+  color: #e9eaec;
+  font-size: 1.3rem;
+  padding-left: 4rem;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 /* tables */
 table {
-    width: 75%;
-    border-collapse: collapse;
-    /* Ensures borders don't double up */
-    border: 2px solid  #e9eaec;
-    /* Outer border */
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 2rem;
-  
-}
-#matches table{
-    margin-bottom: 4rem;
-}
-#players{
-    margin-bottom:  4rem;
+  width: 75%;
+  border-collapse: collapse;
+  /* Ensures borders don't double up */
+  border: 2px solid #e9eaec;
+  /* Outer border */
+  margin-left: auto;
+  margin-right: auto;
 }
 th,
 td {
-    border: 2px solid #f1d131;
-    /* Borders inside the table */
-    padding: 8px;
-    text-align: left;
-    color: #f1d131;
-    font-size: 1.3rem;
-    font-family: comic relief;
+  border: 2px solid #f1d131;
+  /* Borders inside the table */
+  padding: 8px;
+  text-align: left;
+  color: #f1d131;
+  font-size: 1.3rem;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 th {
-    background-color: #1a2238;
+  background-color: #0000003c;
 }
 
+td {
+  background-color: #0000001e;
+}
+.iframe-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
