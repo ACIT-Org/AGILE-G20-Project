@@ -38,7 +38,7 @@ def test_match_completion_logic(client):
     db.session.add(match)
     db.session.commit()
 
-    # Run your method to mark matches completed
+    # Run method to mark matches completed
     match.completed_check()
 
     # Assert the match is completed and has a winner
@@ -72,24 +72,29 @@ def test_match_not_completed(client):
 
 def test_homepage(client):
     response = client.get("/")
+    #ensure correct response code and data is shown
     assert response.status_code == 200
     assert b"Marvel Rivals TV" in response.data
 
 def test_matches_view_while_empty(client):
     response = client.get("/matches")
+    #ensure correct response code and data is shown
     assert response.status_code == 200
     assert b"Completed Matches" in response.data and b"Matches" in response.data
 
 def test_teams_view_with_one_team(client):
+    #create team and addd to db
     team = Team(name="Lions")
     db.session.add(team)
     db.session.commit()
 
     response = client.get("/teams")
+    #ensure correct response code and data is shown
     assert response.status_code == 200
     assert b"Lions" in response.data
 
 def test_team_view_specific_person(client):
+    #create team and player and add to db
     teamon = Team(name="wolves")
     player = Player(name="John Doe", team=teamon)
     db.session.add(teamon)
@@ -97,26 +102,31 @@ def test_team_view_specific_person(client):
     db.session.commit()
 
     response = client.get("/teams/wolves")
+    #ensure correct response code and data is shown
     assert response.status_code == 200
     assert b"John Doe" in response.data
 
 def test_players_view_with_one_player(client):
+    #create player and add to db
     player = Player(name="Test Player", team_id=None)
     db.session.add(player)
     db.session.commit()
 
     response = client.get("/players")
+    #ensure correct response code and data is shown
     assert response.status_code == 200
     assert b"Test Player" in response.data
 
 def test_match_view_to_view_one_player(client):
+    #create a team and add it to the db
     team = Team(name="Sharks")
     db.session.add(team)
-    db.session.flush()
 
+    #create a player and add them to the team
     player = Player(name="Jane Smith", team_id=team.id)
     db.session.add(player)
 
+    #create two matches one completed and one not completed
     match1 = Match(team1_id=team.id, team2_id=team.id, completed=False)
     match2 = Match(team1_id=team.id, team2_id=team.id, completed=True)
     db.session.add(match1)
@@ -124,37 +134,50 @@ def test_match_view_to_view_one_player(client):
     db.session.commit()
 
     response = client.get(f"/players/{player.id}")
+    #ensure correct response code and data is shown
     assert response.status_code == 200
     assert b"Jane Smith" in response.data
 
 def test_import_players(setup_database):
+    #create mock data
     fake_data="name,age,gamertag,team\nAlice,22,Alicorn,TeamA\n"
     mocked_open = mock_open(read_data=fake_data)
 
+    #patch the mock data into the function
     with patch("builtins.open",mocked_open):
         import_players()
 
     player = db.session.query(Player).first()
     team = db.session.query(Team).first()
+    #ensure data is loaded into the database correctly 
     assert player is not None
     assert team.name == "TeamA"
     assert player.team_id == team.id
 
 def test_import_maps(setup_database):
+    #create mock data
     fake_data="name\nArena1"
     mocked_open = mock_open(read_data=fake_data)
 
+    #patch the mock data into the function
     with patch("builtins.open",mocked_open):
         import_maps()
+
     map = db.session.query(Maps).first()
+    #ensure data is loaded into the database correctly 
     assert map is not None
     assert map.name == "Arena1"
 
 def test_import_characters(setup_database):
+    #create mock data
     fake_data="name,role\nWarrior,Tank"
     mocked_open = mock_open(read_data=fake_data)
+
+    #patch the mock data into the function
     with patch("builtins.open",mocked_open):
         import_characters()
+
     character = db.session.query(Characters).first()
+    #ensure data is loaded into the database correctly 
     assert character is not None
     assert character.role == "Tank"
