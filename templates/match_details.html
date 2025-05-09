@@ -41,7 +41,7 @@ matches.team2_id %}
 </table>
 {% endif %} {% endfor %} 
 </table>
-{% for vods in vod %}{% if vods.match_id == matches.id %}
+{% for vods in vod %}{% if vods.match_id == matches.id and matches.winner %}
 <h1>Match VOD</h1>
 <div class="iframe-container"><iframe width="720" height="320"src="{{ vods.link }}">
 </iframe></div>
