@@ -4,13 +4,16 @@ White: #e9eaec
 Dark Grey: #33334b */
 
 /* headings */
+
 h1 {
   font-size: 2.5rem;
   color: #f1d131;
   text-align: center;
   text-transform: uppercase;
   font-family: cal sans;
+
 }
+
 h2,h3,h4,h5,h6{
     color: #f1d131;
     font-size: 1.5rem;
@@ -27,6 +30,7 @@ h3 {
 h4 {
   padding: 4rem;
 }
+
 body {
   background-color: #33334b;
 }
@@ -73,6 +77,9 @@ a:hover {
   font-size: 1.3rem;
   font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
+#player_single h2{
+    font-size: 2.4rem;
+}
 /* body font */
 p {
   color: #e9eaec;
@@ -91,7 +98,6 @@ table {
   margin-left: auto;
   margin-right: auto;
 }
-
 th,
 td {
   border: 2px solid #f1d131;
