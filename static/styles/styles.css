@@ -36,35 +36,49 @@ nav {
   flex-direction: row;
   align-content: center;
   justify-content: center;
+  margin-bottom: 1.5rem; 
 }
 a {
   font-size: 1.2rem;
   color: #f1d131;
   text-decoration: none;
   padding: 2rem;
-  font-family: comic relief;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+nav a {
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border: 2px solid #f1d131;
+    border-radius: 10px;
+    background-color: transparent;
+    display: inline-block;
+    transition: all 0.3s ease;
+    margin: 0 0.5rem;
+  }
 a:hover {
   color: #e9eaec;
+  
 }
 #matches a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 #players a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 #teams a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 /* body font */
 p {
   color: #e9eaec;
   font-size: 1.3rem;
   padding-left: 4rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 /* tables */
@@ -86,7 +100,7 @@ td {
   text-align: left;
   color: #f1d131;
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 th {
