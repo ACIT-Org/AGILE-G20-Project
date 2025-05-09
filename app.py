@@ -67,6 +67,7 @@ def team_name(name):
     
     return render_template(
        "team_details.html", 
+       winrate = found_team.winrate,
        team=team_players, 
        name = ' '.join([word.capitalize() for word in name.split()]),
        upcoming_matches = upcoming, 
