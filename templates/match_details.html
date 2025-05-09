@@ -3,7 +3,7 @@
 <h1>Winner: {{ matches.winner }}</h1>
 <h1>Map: {{ matches.map }}</h1>
 <h1>Date: {{ matches.play_date.strftime('%B %d, %Y, %I:%M %p') }}</h1>
-<p>Teams count: {{ teams | length }}</p>
+<h1>Teams: {{ matches.team1.name }} vs. {{ matches.team2.name }}</h1>
 {% for team in teams %} {% if team.id == matches.team1_id or team.id ==
 matches.team2_id %}
 <h2>{{ team.name }} Stats</h2>
@@ -39,4 +39,11 @@ matches.team2_id %}
   </tr>
   {% endif %} {% endif %} {% endfor %} {% endif %} {% endfor %}
 </table>
-{% endif %} {% endfor %} {% endblock %}
+{% endif %} {% endfor %} 
+</table>
+{% for vods in vod %}{% if vods.match_id == matches.id %}
+<h1>Match VOD</h1>
+<div class="iframe-container"><iframe width="720" height="320"src="{{ vods.link }}">
+</iframe></div>
+{% endif %}{% endfor %}
+{% endblock %}

@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from models import Team, Player, Match, PlayerStats, Maps, Characters
+from models import Team, Player, Match, PlayerStats, Maps, Characters, MatchVOD
 from db import db
 from app import app
 import sys
@@ -80,12 +80,6 @@ def random_matches():
         random_team2 = db.session.execute(
             select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
 
-        # randnum = randint(1, 2)
-        # if randnum == 1:
-        #     winning_team = random_team1.name
-        # else:
-        #     winning_team = random_team2.name
-
         # Generate a random match timestamp within the past few days
         created_time = dt.now() - timedelta(
             days=randint(-10, 10),
@@ -106,46 +100,60 @@ def random_matches():
         )
         db.session.add(match)
         
-        random_match_player_stats(match)
+        # random_match_player_stats(match)
 
     db.session.commit()  # Save all matches
 
-def random_match_player_stats(current_match):
-    random_team1 = current_match.team1
-    random_team2 = current_match.team2
+# def random_match_player_stats(current_match):
+#     random_team1 = current_match.team1
+#     random_team2 = current_match.team2
 
     
-    for player in random_team1.players:
-        random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
-        playerstat = PlayerStats(
-            player_id=player.id,
-            match_id=current_match.id, 
-            kills = randint(0 , 50),
-            deaths = randint(0 , 50),
-            assists = randint(0 , 50),
-            damageDealt = randint(0 , 50000),
-            damageBlocked = randint(0 , 30000),
-            healing = randint(0 , 40000),
-            accuracy = randint(0 , 100),
-            characterplayed = random_character.name
-        )
-        db.session.add(playerstat)
+#     for player in random_team1.players:
+#         random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
+#         playerstat = PlayerStats(
+#             player_id=player.id,
+#             match_id=current_match.id, 
+#             kills = randint(0 , 50),
+#             deaths = randint(0 , 50),
+#             assists = randint(0 , 50),
+#             damageDealt = randint(0 , 50000),
+#             damageBlocked = randint(0 , 30000),
+#             healing = randint(0 , 40000),
+#             accuracy = randint(0 , 100),
+#             characterplayed = random_character.name
+#         )
+#         db.session.add(playerstat)
 
-    for player in random_team2.players:
-        random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
-        playerstat = PlayerStats(
-            player_id=player.id,
-            match_id=current_match.id, 
-            kills = randint(0 , 50),
-            deaths = randint(0 , 50),
-            assists = randint(0 , 50),
-            damageDealt = randint(0 , 50000),
-            damageBlocked = randint(0 , 30000),
-            healing = randint(0 , 40000),
-            accuracy = randint(0 , 100),
-            characterplayed = random_character.name
-        )
-        db.session.add(playerstat)
+#     for player in random_team2.players:
+#         random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
+#         playerstat = PlayerStats(
+#             player_id=player.id,
+#             match_id=current_match.id, 
+#             kills = randint(0 , 50),
+#             deaths = randint(0 , 50),
+#             assists = randint(0 , 50),
+#             damageDealt = randint(0 , 50000),
+#             damageBlocked = randint(0 , 30000),
+#             healing = randint(0 , 40000),
+#             accuracy = randint(0 , 100),
+#             characterplayed = random_character.name
+#         )
+#         db.session.add(playerstat)
+
+def random_videos():
+    vodlist = ["https://www.youtube.com/embed/G6_vnUEOhzg","https://www.youtube.com/embed/wPuF5A8WNBE",
+               "https://www.youtube.com/embed/w_aQqTVozj0","https://www.youtube.com/embed/jieVzQeKx-4",
+               "https://www.youtube.com/embed/977O3R7NIJA","https://www.youtube.com/embed/4ClM22XmcUI",
+               "https://www.youtube.com/embed/momFc2v2fZA","https://www.youtube.com/embed/-aDOweUVp2s",
+               "https://www.youtube.com/embed/u0RohSyvXD8"]
+    for y in range(30):  # Assign 30 random videos
+        x = randint(0,8)
+        vods = MatchVOD(
+            match_id = y,
+            link = vodlist[x] )
+        db.session.add(vods)
+    db.session.commit()  # Save all matches
 
 # ------------------ Main Execution Block ------------------
 
@@ -169,3 +177,4 @@ if __name__ == "__main__":
         import_maps()
         import_characters()
         random_matches()
+        random_videos()
