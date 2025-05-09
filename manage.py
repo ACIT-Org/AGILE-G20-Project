@@ -112,7 +112,7 @@ def random_videos():
         for vod in vods:
             for v in vod:
                 vodlist.append(v)
-                
+
     for y in range(30):  # Assign 30 random videos
         x = randint(0,len(vodlist)-1)
         vods = MatchVOD(
@@ -120,6 +120,14 @@ def random_videos():
             link = vodlist[x] )
         db.session.add(vods)
     db.session.commit()  # Save all matches
+
+def check_if_match_is_complete():
+    matches = db.select(Match).where(Match.completed == False)
+    results = db.session.execute(matches).scalars().all()
+
+    for match in results:
+        match.completed_check()
+    db.session.commit()
 
 # ------------------ Main Execution Block ------------------
 
@@ -144,3 +152,5 @@ if __name__ == "__main__":
         import_characters()
         random_matches()
         random_videos()
+        check_if_match_is_complete()
+        
