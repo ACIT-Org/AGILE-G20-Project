@@ -1,64 +1,42 @@
-{% extends "base.html" %}
-{% block content %}
-
-  <body>
-    <h2>Match Stats:</h2>
-    <h1>Score: {{ matches.winner }}</h1>
-    <h1>Map: {{ matches.map }}</h1>
-    <h1>Date: {{ matches.playdate }}</h1>
-    {% for row in teams %}
-      {if teams.id == matches.team1_id}
-          {% for row in players%}
-            {% if players.team == teams.name %}
-                {% for row in PlayerStats %}
-                  {% if PlayerStats.playerid == players.id %}
-                    {% if PlayerStats.matchid == matches.id %}
-                      <h1>Team: {{ teams.name }}</h1>
-                      <table>
-                        <th> {{ player.name }}</th>
-                        <th>{{ PlayerStats.kills }}</th>
-                        <th>{{ PlayerStats.deaths }}</th>
-                        <th>{{ PlayerStats.assists }}</th>
-                        <th>{{ PlayerStats.damageDealt }}</th>
-                        <th>{{ PlayerStats.damageBlocked }}</th>
-                        <th>{{ PlayerStats.healing }}</th>
-                        <th>{{ PlayerStats.accuracy }}</th>
-                        <th>{{ PlayerStats.characterPlayed }}</th>
-                      </tr>
-                    {% endif %}
-                  {% endif %}
-                {% endfor %}
-            {% endif %}
-          {% endfor %}
-      {% endif %}
-    {% endfor %}
-    {% for row in teams %}
-      {if teams.id == matches.team1_id}
-          {% for row in players%}
-            {% if players.team == teams.name %}
-                {% for row in PlayerStats %}
-                  {% if PlayerStats.playerid == players.id %}
-                    {% if PlayerStats.matchid == matches.id %}
-                      <h1>Team: {{ teams.name }}</h1>
-                      <table>
-                        <th> {{ player.name }}</th>
-                        <th>{{ PlayerStats.kills }}</th>
-                        <th>{{ PlayerStats.deaths }}</th>
-                        <th>{{ PlayerStats.assists }}</th>
-                        <th>{{ PlayerStats.damageDealt }}</th>
-                        <th>{{ PlayerStats.damageBlocked }}</th>
-                        <th>{{ PlayerStats.healing }}</th>
-                        <th>{{ PlayerStats.accuracy }}</th>
-                        <th>{{ PlayerStats.characterPlayed }}</th>
-                      </tr>
-                    {% endif %}
-                  {% endif %}
-                {% endfor %}
-            {% endif %}
-          {% endfor %}
-      {% endif %}
-    {% endfor %}
-    </table>
-  </body>
-
-  {% endblock %}
+{% extends "base.html" %} {% block content %}
+<h2>Match Stats:</h2>
+<h1>Winner: {{ matches.winner }}</h1>
+<h1>Map: {{ matches.map }}</h1>
+<h1>Date: {{ matches.play_date.strftime('%B %d, %Y, %I:%M %p') }}</h1>
+<p>Teams count: {{ teams | length }}</p>
+{% for team in teams %} {% if team.id == matches.team1_id or team.id ==
+matches.team2_id %}
+<h2>{{ team.name }} Stats</h2>
+<table>
+  <tr>
+    <th>Player</th>
+    <th>Kills</th>
+    <th>Deaths</th>
+    <th>Assists</th>
+    <th>Damage Dealt</th>
+    <th>Damage Blocked</th>
+    <th>Healing</th>
+    <th>Accuracy</th>
+    <th>Character Played</th>
+  </tr>
+  {% for player in players %} {% if player.team_id == team.id %} {% for stat in
+  PlayerStats %} {% if stat.player_id == player.id %} {% if stat.match_id ==
+  matches.id %}
+  <tr>
+    <td>
+      <a href="{{ url_for('player_id', id=player.id) }}"
+        >{{ player.gamertag }}</a
+      >
+    </td>
+    <td>{{ stat.kills }}</td>
+    <td>{{ stat.deaths }}</td>
+    <td>{{ stat.assists }}</td>
+    <td>{{ stat.damageDealt }}</td>
+    <td>{{ stat.damageBlocked }}</td>
+    <td>{{ stat.healing }}</td>
+    <td>{{ stat.accuracy }}%</td>
+    <td>{{ stat.characterplayed.name }}</td>
+  </tr>
+  {% endif %} {% endif %} {% endfor %} {% endif %} {% endfor %}
+</table>
+{% endif %} {% endfor %} {% endblock %}

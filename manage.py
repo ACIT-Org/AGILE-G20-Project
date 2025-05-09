@@ -1,10 +1,9 @@
 from sqlalchemy import select
-from models import Team, Player, Match
+from models import Team, Player, Match, PlayerStats, Maps, Characters
 from db import db
 from app import app
 import sys
 import csv
-import random
 from datetime import datetime as dt
 from datetime import timedelta
 from random import randint 
@@ -46,10 +45,34 @@ def import_players():
 
         db.session.commit()  
 
+def import_maps():
+    with open("maps.csv", "r", encoding="utf-8") as file:
+        data = csv.DictReader(file)  # Read each row as a dictionary.
+
+        for line in data:
+            map = Maps(
+                name=line["name"]
+            )
+            db.session.add(map) 
+
+        db.session.commit()  
+
+def import_characters():
+    with open("characters.csv", "r", encoding="utf-8") as file:
+        data = csv.DictReader(file)  # Read each row as a dictionary.
+
+        for line in data:
+            character = Characters(
+                name=line["name"],
+                role=line["role"]
+            )
+            db.session.add(character) 
+
+        db.session.commit()  
 # # ------------------ Random Data Generation ------------------
 
 def random_matches():
-    for _ in range(10):  # Create 10 random matches
+    for _ in range(30):  # Create 10 random matches
         # Select a random team
         random_team1 = db.session.execute(
             select(Team).order_by(db.func.random())).scalar()
@@ -57,15 +80,11 @@ def random_matches():
         random_team2 = db.session.execute(
             select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
 
-        # teams =[]
-        # teams.append(random_team1)
-        # teams.append(random_team2)
-
-        randnum = randint(1, 2)
-        if randnum == 1:
-            winning_team = random_team1.name
-        else:
-            winning_team = random_team2.name
+        # randnum = randint(1, 2)
+        # if randnum == 1:
+        #     winning_team = random_team1.name
+        # else:
+        #     winning_team = random_team2.name
 
         # Generate a random match timestamp within the past few days
         created_time = dt.now() - timedelta(
@@ -75,26 +94,58 @@ def random_matches():
         )
 
         #random maps
-        maps = ["Central Park", "Hall of Djalia", "Symbiotic Surface", "Shin-Shibuya", "Midtown", "Spider-Islands", "Yggdrasil Path", "Birin T'challa", "Hell's Heaven", "Krakoa", "Royal Palace"]
-        random_map_index = randint(0, len(maps)-1)
+        random_map = db.session.execute(
+            select(Maps).order_by(db.func.random())).scalar()
         # Create the order
         match = Match(
-            winner=winning_team,
+            # winner=winning_team,
             play_date =created_time,
             team1 = random_team1,
             team2 = random_team2,
-            map = maps[random_map_index]
+            map = random_map.name
         )
         db.session.add(match)
-        # Create product-order entries for the order
-        # for team in teams:
-        #     teams_matches = TeamMatch(
-        #         teams=team,
-        #         matches=match,
-        #     )
-        #     db.session.add(teams_matches)
+        
+        random_match_player_stats(match)
 
-    db.session.commit()  # Save all new orders and items
+    db.session.commit()  # Save all matches
+
+def random_match_player_stats(current_match):
+    random_team1 = current_match.team1
+    random_team2 = current_match.team2
+
+    
+    for player in random_team1.players:
+        random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
+        playerstat = PlayerStats(
+            player_id=player.id,
+            match_id=current_match.id, 
+            kills = randint(0 , 50),
+            deaths = randint(0 , 50),
+            assists = randint(0 , 50),
+            damageDealt = randint(0 , 50000),
+            damageBlocked = randint(0 , 30000),
+            healing = randint(0 , 40000),
+            accuracy = randint(0 , 100),
+            characterplayed = random_character.name
+        )
+        db.session.add(playerstat)
+
+    for player in random_team2.players:
+        random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
+        playerstat = PlayerStats(
+            player_id=player.id,
+            match_id=current_match.id, 
+            kills = randint(0 , 50),
+            deaths = randint(0 , 50),
+            assists = randint(0 , 50),
+            damageDealt = randint(0 , 50000),
+            damageBlocked = randint(0 , 30000),
+            healing = randint(0 , 40000),
+            accuracy = randint(0 , 100),
+            characterplayed = random_character.name
+        )
+        db.session.add(playerstat)
 
 # ------------------ Main Execution Block ------------------
 
@@ -115,4 +166,6 @@ if __name__ == "__main__":
         drop_tables()
         create_tables()
         import_players()
+        import_maps()
+        import_characters()
         random_matches()
