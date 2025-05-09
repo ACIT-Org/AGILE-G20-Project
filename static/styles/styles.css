@@ -96,3 +96,8 @@ th {
 td {
   background-color: #0000001e;
 }
+.iframe-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
