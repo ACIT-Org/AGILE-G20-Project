@@ -4,16 +4,18 @@
   <body>
     <h1>Players</h1>
     <table id="players">
-        <th>Id</th>
-        <th>Name</th>
+        <!-- <th>Id</th> -->
         <th>Username</th>
+        <th>Name</th>
+
         <th>Team</th>
       </tr>
       {% for row in players %}
       <tr>
-        <td>{{ row.id }}</td>
-        <td><a href="{{ url_for('player_id', id=row.id) }}">{{ row.name }}</a></td>
-        <td>{{ row.gamertag }}</td>
+        <!-- <td>{{ row.id }}</td> -->
+        <td><a href="{{ url_for('player_id', id=row.id) }}">{{ row.gamertag }}</td>
+        <td>{{ row.name }}</td>
+
         <td>{{ row.team.name }}</td>
       </tr>
       {% endfor %}
