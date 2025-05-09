@@ -20,7 +20,7 @@ def drop_tables():
 # ------------------ Data Import Functions ------------------
 
 def import_players():
-    with open("players.csv", "r", encoding="utf-8") as file:
+    with open("data/players.csv", "r", encoding="utf-8") as file:
         data = csv.DictReader(file)  # Read each row as a dictionary.
 
         for line in data:
@@ -46,7 +46,7 @@ def import_players():
         db.session.commit()  
 
 def import_maps():
-    with open("maps.csv", "r", encoding="utf-8") as file:
+    with open("data/maps.csv", "r", encoding="utf-8") as file:
         data = csv.DictReader(file)  # Read each row as a dictionary.
 
         for line in data:
@@ -58,7 +58,7 @@ def import_maps():
         db.session.commit()  
 
 def import_characters():
-    with open("characters.csv", "r", encoding="utf-8") as file:
+    with open("data/characters.csv", "r", encoding="utf-8") as file:
         data = csv.DictReader(file)  # Read each row as a dictionary.
 
         for line in data:
@@ -104,51 +104,17 @@ def random_matches():
 
     db.session.commit()  # Save all matches
 
-# def random_match_player_stats(current_match):
-#     random_team1 = current_match.team1
-#     random_team2 = current_match.team2
-
-    
-#     for player in random_team1.players:
-#         random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
-#         playerstat = PlayerStats(
-#             player_id=player.id,
-#             match_id=current_match.id, 
-#             kills = randint(0 , 50),
-#             deaths = randint(0 , 50),
-#             assists = randint(0 , 50),
-#             damageDealt = randint(0 , 50000),
-#             damageBlocked = randint(0 , 30000),
-#             healing = randint(0 , 40000),
-#             accuracy = randint(0 , 100),
-#             characterplayed = random_character.name
-#         )
-#         db.session.add(playerstat)
-
-#     for player in random_team2.players:
-#         random_character = db.session.execute(select(Characters).order_by(db.func.random())).scalar()
-#         playerstat = PlayerStats(
-#             player_id=player.id,
-#             match_id=current_match.id, 
-#             kills = randint(0 , 50),
-#             deaths = randint(0 , 50),
-#             assists = randint(0 , 50),
-#             damageDealt = randint(0 , 50000),
-#             damageBlocked = randint(0 , 30000),
-#             healing = randint(0 , 40000),
-#             accuracy = randint(0 , 100),
-#             characterplayed = random_character.name
-#         )
-#         db.session.add(playerstat)
 
 def random_videos():
-    vodlist = ["https://www.youtube.com/embed/G6_vnUEOhzg","https://www.youtube.com/embed/wPuF5A8WNBE",
-               "https://www.youtube.com/embed/w_aQqTVozj0","https://www.youtube.com/embed/jieVzQeKx-4",
-               "https://www.youtube.com/embed/977O3R7NIJA","https://www.youtube.com/embed/4ClM22XmcUI",
-               "https://www.youtube.com/embed/momFc2v2fZA","https://www.youtube.com/embed/-aDOweUVp2s",
-               "https://www.youtube.com/embed/u0RohSyvXD8"]
+    vodlist = []
+    with open("data/videos.csv", "r", encoding="utf-8") as file:
+        vods = csv.reader(file)
+        for vod in vods:
+            for v in vod:
+                vodlist.append(v)
+                
     for y in range(30):  # Assign 30 random videos
-        x = randint(0,8)
+        x = randint(0,len(vodlist)-1)
         vods = MatchVOD(
             match_id = y,
             link = vodlist[x] )
