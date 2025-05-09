@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from models import Team, Player, Match, PlayerStats, Maps, Characters
+from models import Team, Player, Match, PlayerStats, Maps, Characters, MatchVOD
 from db import db
 from app import app
 import sys
@@ -141,6 +141,20 @@ def random_matches():
 #         )
 #         db.session.add(playerstat)
 
+def random_videos():
+    vodlist = ["https://www.youtube.com/embed/G6_vnUEOhzg","https://www.youtube.com/embed/wPuF5A8WNBE",
+               "https://www.youtube.com/embed/w_aQqTVozj0","https://www.youtube.com/embed/jieVzQeKx-4",
+               "https://www.youtube.com/embed/977O3R7NIJA","https://www.youtube.com/embed/4ClM22XmcUI",
+               "https://www.youtube.com/embed/momFc2v2fZA","https://www.youtube.com/embed/-aDOweUVp2s",
+               "https://www.youtube.com/embed/u0RohSyvXD8"]
+    for y in range(30):  # Assign 30 random videos
+        x = randint(0,8)
+        vods = MatchVOD(
+            match_id = y,
+            link = vodlist[x] )
+        db.session.add(vods)
+    db.session.commit()  # Save all matches
+
 # ------------------ Main Execution Block ------------------
 
 if __name__ == "__main__":
@@ -163,3 +177,4 @@ if __name__ == "__main__":
         import_maps()
         import_characters()
         random_matches()
+        random_videos()

@@ -11,14 +11,10 @@ h1 {
   text-transform: uppercase;
   font-family: cal sans;
 }
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #f1d131;
-  font-size: 1.5rem;
-  font-family: cal sans;
+h2,h3,h4,h5,h6{
+    color: #f1d131;
+    font-size: 1.5rem;
+    font-family: cal sans;
 }
 h2 {
   text-align: center;
