@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %}
-<body>  <h1>Matches</h1>
-  <table id="matches">
+<body id="matches">  <h1>Matches</h1>
+  <table>
     <tr>
       <!-- <th>Match ID</th> -->
       <th>Team 1</th>
@@ -21,7 +21,7 @@
     {% endfor %}
   </table>
 
-  <h1>Completed Matches</h1>
+  <h1 id="completed">Completed Matches</h1>
   <table>
     <tr>
       <!-- <th>Match ID</th> -->

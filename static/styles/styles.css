@@ -4,20 +4,12 @@ White: #e9eaec
 Dark Grey: #33334b */
 
 /* headings */
-<<<<<<< HEAD
-=======
-
->>>>>>> dev
 h1 {
   font-size: 2.5rem;
   color: #f1d131;
   text-align: center;
   text-transform: uppercase;
   font-family: cal sans;
-<<<<<<< HEAD
-=======
-
->>>>>>> dev
 }
 
 h2,h3,h4,h5,h6{
@@ -36,14 +28,26 @@ h3 {
 h4 {
   padding: 4rem;
 }
-<<<<<<< HEAD
-body{
-    background-color: #33334b;
-=======
 
+#matches h1{
+  padding-bottom: 1rem;
+}
+h1#completed{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+#players_id h1{
+  padding-bottom: 1rem;
+}
+#team_id h1{
+  padding-bottom: 1rem;
+}
+main{
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
 body {
   background-color: #33334b;
->>>>>>> dev
 }
 /* navigation */
 nav {
@@ -52,25 +56,22 @@ nav {
   align-content: center;
   justify-content: center;
   margin-bottom: 1.5rem; 
+  gap: 3rem;
+     
 }
-<<<<<<< HEAD
-a{
-    font-size: 1.2rem;
-    color:#f1d131;
-    text-decoration: none;
-    padding: 2rem;
-    font-family: comic relief;
-   
-=======
 a {
   font-size: 1.2rem;
   color: #f1d131;
   text-decoration: none;
   padding: 2rem;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
->>>>>>> dev
-}
 
+
+}
+#navigation a{
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+}
 nav a {
     font-size: 1.2rem;
     padding: 0.8rem 1.5rem;
@@ -111,7 +112,6 @@ p {
 
 /* tables */
 table {
-<<<<<<< HEAD
     width: 75%;
     border-collapse: collapse;
     /* Ensures borders don't double up */
@@ -121,22 +121,13 @@ table {
     margin-right: auto;
     
 
-=======
-  width: 75%;
-  border-collapse: collapse;
-  /* Ensures borders don't double up */
-  border: 2px solid #e9eaec;
-  /* Outer border */
-  margin-left: auto;
-  margin-right: auto;
->>>>>>> dev
 }
 
 th,
 td {
   border: 2px solid #f1d131;
   /* Borders inside the table */
-  padding: 8px;
+  padding: 10px;
   text-align: left;
   color: #f1d131;
   font-size: 1.3rem;
@@ -144,11 +135,7 @@ td {
 }
 
 th {
-<<<<<<< HEAD
-    background-color: #f2f2f2;
-=======
   background-color: #0000003c;
->>>>>>> dev
 }
 
 td {
