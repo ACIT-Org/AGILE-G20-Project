@@ -27,7 +27,7 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
-  create-pull-request:S
+  create-pull-request:
     needs: build
     runs-on: ubuntu-latest
     if: ${{ success() }}
