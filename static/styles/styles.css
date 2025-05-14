@@ -4,21 +4,26 @@ White: #e9eaec
 Dark Grey: #33334b */
 
 /* headings */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
 h1 {
   font-size: 2.5rem;
   color: #f1d131;
   text-align: center;
   text-transform: uppercase;
   font-family: cal sans;
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
 }
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #f1d131;
-  font-size: 1.5rem;
-  font-family: cal sans;
+
+h2,h3,h4,h5,h6{
+    color: #f1d131;
+    font-size: 1.5rem;
+    font-family: cal sans;
 }
 h2 {
   text-align: center;
@@ -31,8 +36,14 @@ h3 {
 h4 {
   padding: 4rem;
 }
+<<<<<<< HEAD
 body{
     background-color: #33334b;
+=======
+
+body {
+  background-color: #33334b;
+>>>>>>> dev
 }
 /* navigation */
 nav {
@@ -40,7 +51,9 @@ nav {
   flex-direction: row;
   align-content: center;
   justify-content: center;
+  margin-bottom: 1.5rem; 
 }
+<<<<<<< HEAD
 a{
     font-size: 1.2rem;
     color:#f1d131;
@@ -48,21 +61,42 @@ a{
     padding: 2rem;
     font-family: comic relief;
    
+=======
+a {
+  font-size: 1.2rem;
+  color: #f1d131;
+  text-decoration: none;
+  padding: 2rem;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+>>>>>>> dev
 }
+
+nav a {
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border: 2px solid #f1d131;
+    border-radius: 10px;
+    background-color: transparent;
+    display: inline-block;
+    transition: all 0.3s ease;
+    margin: 0 0.5rem;
+  }
 a:hover {
   color: #e9eaec;
+  
 }
 #matches a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 #players a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 #teams a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 #player_single h2{
     font-size: 2.4rem;
@@ -72,11 +106,12 @@ p {
   color: #e9eaec;
   font-size: 1.3rem;
   padding-left: 4rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 /* tables */
 table {
+<<<<<<< HEAD
     width: 75%;
     border-collapse: collapse;
     /* Ensures borders don't double up */
@@ -86,6 +121,15 @@ table {
     margin-right: auto;
     
 
+=======
+  width: 75%;
+  border-collapse: collapse;
+  /* Ensures borders don't double up */
+  border: 2px solid #e9eaec;
+  /* Outer border */
+  margin-left: auto;
+  margin-right: auto;
+>>>>>>> dev
 }
 
 th,
@@ -96,13 +140,22 @@ td {
   text-align: left;
   color: #f1d131;
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 th {
+<<<<<<< HEAD
     background-color: #f2f2f2;
+=======
+  background-color: #0000003c;
+>>>>>>> dev
 }
 
 td {
   background-color: #0000001e;
 }
+.iframe-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
