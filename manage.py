@@ -245,6 +245,7 @@ if __name__ == "__main__":
 
     filefirst = sys.argv[2]
     if len(sys.argv) < 4:
+        filefirst = 1
         filelast = sys.argv[2]
     else:
         filelast = sys.argv[3]
