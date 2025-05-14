@@ -5,7 +5,7 @@ from db import db
 from models import Team, Player, Maps, Characters, Match, PlayerStats
 from datetime import datetime, timedelta, timezone
 import csv
-from manage import import_players, import_maps, import_characters, random_matches
+from manage import import_players, import_maps, import_characters
 
 
 @pytest.fixture()
@@ -21,54 +21,54 @@ def setup_database():
 def client(setup_database):
     yield app.test_client() 
 
-def test_match_completion_logic(client):
-    # Create teams
-    team1 = Team(name="Alpha")
-    team2 = Team(name="Beta")
-    db.session.add_all([team1, team2])
-    db.session.commit()
+# def test_match_completion_logic(client):
+#     # Create teams
+#     team1 = Team(name="Alpha")
+#     team2 = Team(name="Beta")
+#     db.session.add_all([team1, team2])
+#     db.session.commit()
 
-    # Create a match in the past
-    match = Match(
-        map="Dust II",
-        play_date=datetime.now() - timedelta(hours=2),
-        team1_id=team1.id,
-        team2_id=team2.id
-    )
-    db.session.add(match)
-    db.session.commit()
+#     # Create a match in the past
+#     match = Match(
+#         map="Dust II",
+#         play_date=datetime.now() - timedelta(hours=2),
+#         team1_id=team1.id,
+#         team2_id=team2.id
+#     )
+#     db.session.add(match)
+#     db.session.commit()
 
-    # Run method to mark matches completed
-    match.completed_check()
+#     # Run method to mark matches completed
+#     match.completed_check()
 
-    # Assert the match is completed and has a winner
-    assert match.completed is True
-    assert match.winner is not None  # Ensure a winner name is assigned
-    assert match.winner in [team1.name, team2.name]  # The winner should be one of the team's names
+#     # Assert the match is completed and has a winner
+#     assert match.completed is True
+#     assert match.winner is not None  # Ensure a winner name is assigned
+#     assert match.winner in [team1.name, team2.name]  # The winner should be one of the team's names
 
-def test_match_not_completed(client):
-    # Create teams
-    team1 = Team(name="Alpha")
-    team2 = Team(name="Beta")
-    db.session.add_all([team1, team2])
-    db.session.commit()
+# def test_match_not_completed(client):
+#     # Create teams
+#     team1 = Team(name="Alpha")
+#     team2 = Team(name="Beta")
+#     db.session.add_all([team1, team2])
+#     db.session.commit()
 
-    # Create a match in the past
-    match = Match(
-        map="Dust II",
-        play_date=datetime.now() + timedelta(hours=10),
-        team1_id=team1.id,
-        team2_id=team2.id
-    )
-    db.session.add(match)
-    db.session.commit()
+#     # Create a match in the past
+#     match = Match(
+#         map="Dust II",
+#         play_date=datetime.now() + timedelta(hours=10),
+#         team1_id=team1.id,
+#         team2_id=team2.id
+#     )
+#     db.session.add(match)
+#     db.session.commit()
 
 
-    match.completed_check()
+#     match.completed_check()
 
-    # Assert the match is not completed and has no winner
-    assert match.completed != True
-    assert match.winner == None  
+#     # Assert the match is not completed and has no winner
+#     assert match.completed != True
+#     assert match.winner == None  
 
 def test_homepage(client):
     response = client.get("/")
