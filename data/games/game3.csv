@@ -1,0 +1,14 @@
+player,team,kills,deaths,assists,damageDealt,damageBlocked,healingDone,accuracy,characterPlayed,winningTeam,timePlayed,map
+VirusRush,Fnatic,24,46,12,24415,3985,9281,73%,Star-Lord,Cloud9,May 13 2025 1012 PM,Shin-Shibuya
+CrystalSnare,Fnatic,34,22,17,13043,15181,35904,51%,Storm
+NullFury,Fnatic,40,7,25,6125,12832,12084,87%,Spider-Man
+VenomMuse,Fnatic,17,39,15,15702,4939,20521,77%,Magik
+GlitchGuard,Fnatic,14,35,11,28593,5665,21769,90%,Black Panther
+RadiantZeta,Fnatic,41,6,47,38428,4681,28485,98%,Human Torch
+NovaThorn,Cloud9,35,4,34,12424,12268,25773,48%,Black Widow
+SilentVex,Cloud9,21,44,29,36878,8986,11596,81%,Iron Fist
+PulseKnight,Cloud9,34,34,32,14094,7080,31392,67%,Squirrel Girl
+AetherShock,Cloud9,20,47,16,47327,28891,18305,83%,Namor
+NeonDagger,Cloud9,33,10,47,10015,11890,9846,82%,Hela
+HoloSpark,Cloud9,17,9,26,13116,22544,38787,75%,Peni Parker
+
