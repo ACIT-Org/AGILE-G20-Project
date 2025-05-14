@@ -1,6 +1,5 @@
 {% extends "base.html" %} {% block content %}
-<body>
-  <h1>Matches</h1>
+<body>  <h1>Matches</h1>
   <table id="matches">
     <tr>
       <!-- <th>Match ID</th> -->
@@ -16,11 +15,7 @@
       <td>{{ match.team1.name }}</td>
       <td>{{ match.team2.name }}</td>
 
-      <td>
-        <a href="{{ url_for('matches_details', id=match.id) }}"
-          >{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</a
-        >
-      </td>
+      <td><a href="{{ url_for('matches_details', id=match.id) }}">{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</a></td>
       <td>{{ match.map }}</td>
     </tr>
     {% endfor %}
@@ -43,11 +38,8 @@
       <td>{{ match.team1.name }}</td>
       <td>{{ match.team2.name }}</td>
 
-      <td>
-        <a href="{{ url_for('matches_details', id=match.id) }}"
-          >{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</a
-        >
-      </td>
+      <td><a href="{{ url_for('matches_details', id=match.id) }}">
+        {{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</a></td>
       <td>{{ match.map }}</td>
       <td>{{ match.winner }}</td>
     </tr>

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 from pathlib import Path
-from models import Match, Player, Team, PlayerStats
+from models import Match, Player, Team, PlayerStats, MatchVOD
 from db import db
 from routes.api import api_bp
 from sqlalchemy import desc, or_
@@ -32,7 +32,7 @@ def matches_view():
 def matches_details(id):
     statement = db.select(Match).where(Match.id == id)
     match = db.session.execute(statement).scalar()
-    return render_template("match_details.html",matches=match,teams=Team.query.all(),players=Player.query.all(),PlayerStats=PlayerStats.query.all())
+    return render_template("match_details.html",matches=match,teams=Team.query.all(),players=Player.query.all(),PlayerStats=PlayerStats.query.all(),vod=MatchVOD.query.all())
 
 
 @app.route("/teams")
