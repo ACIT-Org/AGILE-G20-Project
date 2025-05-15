@@ -29,14 +29,14 @@ h4 {
 }
 body {
   background-color: #33334b;
-  background-image: url('/static/images/rivals.jpg');
+  /* background-image: url('/static/images/rivals.jpg');
     background-repeat: repeat;
     background-position: left center, right center;
     background-size: 100px auto;
     background-origin: content-box;
-    background-attachment: fixed;
-}
-main {
+    background-attachment: fixed; */
+} 
+/* main {
   max-width: 900px;
   margin: 0 auto;
   background-color: #33334b;
@@ -44,7 +44,7 @@ main {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
-}
+} */
 /* navigation */
 nav {
   display: flex;
