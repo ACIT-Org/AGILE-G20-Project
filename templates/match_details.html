@@ -4,46 +4,58 @@
 <h1>Map: {{ matches.map }}</h1>
 <h1>Date: {{ matches.play_date.strftime('%B %d, %Y, %I:%M %p') }}</h1>
 <h1>Teams: {{ matches.team1.name }} vs. {{ matches.team2.name }}</h1>
-{% for team in teams %} {% if team.id == matches.team1_id or team.id ==
-matches.team2_id %}
-<h2>{{ team.name }} Stats</h2>
-<table>
-  <tr>
-    <th>Player</th>
-    <th>Kills</th>
-    <th>Deaths</th>
-    <th>Assists</th>
-    <th>Damage Dealt</th>
-    <th>Damage Blocked</th>
-    <th>Healing</th>
-    <th>Accuracy</th>
-    <th>Character Played</th>
-  </tr>
-  {% for player in players %} {% if player.team_id == team.id %} {% for stat in
-  PlayerStats %} {% if stat.player_id == player.id %} {% if stat.match_id ==
-  matches.id %}
-  <tr>
-    <td>
-      <a href="{{ url_for('player_id', id=player.id) }}"
-        >{{ player.gamertag }}</a
-      >
-    </td>
-    <td>{{ stat.kills }}</td>
-    <td>{{ stat.deaths }}</td>
-    <td>{{ stat.assists }}</td>
-    <td>{{ stat.damageDealt }}</td>
-    <td>{{ stat.damageBlocked }}</td>
-    <td>{{ stat.healing }}</td>
-    <td>{{ stat.accuracy }}%</td>
-    <td>{{ stat.characterplayed }}</td>
-  </tr>
-  {% endif %} {% endif %} {% endfor %} {% endif %} {% endfor %}
-</table>
-{% endif %} {% endfor %} 
-</table>
-{% for vods in vod %}{% if vods.match_id == matches.id and matches.winner %}
-<h1>Match VOD</h1>
-<div class="iframe-container"><iframe width="720" height="320"src="{{ vods.link }}">
-</iframe></div>
-{% endif %}{% endfor %}
+{% if matches.complted == 0 %}
+  {% for team in teams %} 
+    {% if team.id == matches.team1_id or team.id == matches.team2_id %}
+      <h2>{{ team.name }} Stats</h2>
+      <table>
+        <tr>
+          <th>Player</th>
+          <th>Kills</th>
+          <th>Deaths</th>
+          <th>Assists</th>
+          <th>Damage Dealt</th>
+          <th>Damage Blocked</th>
+          <th>Healing</th>
+          <th>Accuracy</th>
+          <th>Character Played</th>
+        </tr>
+        {% for player in players %} 
+          {% if player.team_id == team.id %} 
+            {% for stat in PlayerStats %} 
+              {% if stat.player_id == player.id %}
+                {% if stat.match_id == matches.id %}
+                  <tr>
+                    <td>
+                      <a href="{{ url_for('player_id', id=player.id) }}">
+                        {{ player.gamertag }}
+                      </a>
+                    </td>
+                    <td>{{ stat.kills }}</td>
+                    <td>{{ stat.deaths }}</td>
+                    <td>{{ stat.assists }}</td>
+                    <td>{{ stat.damageDealt }}</td>
+                    <td>{{ stat.damageBlocked }}</td>
+                    <td>{{ stat.healing }}</td>
+                    <td>{{ stat.accuracy }}</td>
+                    <td>{{ stat.characterplayed }}</td>
+                  </tr>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </table>
+    {% endif %}
+  {% endfor %}
+
+  {% for vods in vod %}
+    {% if vods.match_id == matches.id and matches.winner %}
+      <h1>Match VOD</h1>
+      <div class="iframe-container">
+        <iframe width="720" height="320" src="{{ vods.link }}"></iframe>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
 {% endblock %}
