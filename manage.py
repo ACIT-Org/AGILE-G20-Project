@@ -72,23 +72,25 @@ def import_characters():
 
         db.session.commit()  
 
-def import_matches(filefirst,filelast):
 
-    folder_path=Path("data/games/")
-
-    if folder_path.exists() and folder_path.is_dir():
-        files=[]
-        for item in folder_path.iterdir():
-            if item.is_file():
-                files.append(item.name)
+def import_matches(filefirst, filelast):
+    folder_path = Path("data/games/")
     
-    pattern = r'^game\d+\.csv$'
-
-    for file in files:
-        if re.fullmatch(pattern,file):
-            pass
-        else:
-            raise Exception("File in foler does not match pattern of game_.csv")
+    if not folder_path.exists() or not folder_path.is_dir():
+        raise ValueError(f"Directory not found: {folder_path}")
+    
+    pattern = r'^game\d+\.csv$' 
+    valid_files = []
+    
+    for item in folder_path.iterdir():
+        if item.is_file():
+            if re.fullmatch(pattern, item.name):
+                valid_files.append(item)
+            else:
+                raise ValueError(f"File '{item.name}' does not match required pattern 'game<number>.csv'")
+    
+    if not valid_files:
+        raise ValueError("No valid game files found in directory")
 
     filefirst = int(filefirst)
     filelast = int(filelast)
