@@ -141,32 +141,39 @@ def import_matches(filefirst,filelast):
             team2=teams[1]
             team2=db.session.execute(select(Team).where(Team.name == team2)).scalar()
 
+
             play_date = datetime.datetime.strptime(time, "%b %d %Y %I%M %p")
+            now = datetime.datetime.now()
+            completed = False
+            if now > play_date:
+                completed = True
 
             match = Match(
                 winner=winner,
                 play_date =play_date,
                 team1 = team1,
                 team2 = team2,
-                map = map
+                map = map,
+                completed=completed
             )
 
             db.session.add(match)
 
             for line in cleaned_data:
-                player = db.session.execute(select(Player).where(Player.gamertag == line["player"])).scalar()
-                playerstat =PlayerStats(
-                    player_id = player.id,
-                    match_id = match.id,
-                    kills=line["kills"],
-                    deaths=line["deaths"],
-                    assists = line["assists"],
-                    damageDealt = line["damageDealt"],
-                    damageBlocked = line["damageBlocked"],
-                    healing = line["healingDone"],
-                    accuracy = line["accuracy"],
-                    characterplayed = line["characterPlayed"]
-                )
+                if completed:
+                    player = db.session.execute(select(Player).where(Player.gamertag == line["player"])).scalar()
+                    playerstat =PlayerStats(
+                        player_id = player.id,
+                        match_id = match.id,
+                        kills=line["kills"],
+                        deaths=line["deaths"],
+                        assists = line["assists"],
+                        damageDealt = line["damageDealt"],
+                        damageBlocked = line["damageBlocked"],
+                        healing = line["healingDone"],
+                        accuracy = line["accuracy"],
+                        characterplayed = line["characterPlayed"]
+                    )
 
                 db.session.add(playerstat)
 
