@@ -17,7 +17,12 @@ db.init_app(app)
 
 @app.route("/")
 def home():
- return render_template("home.html", my_list=["Tim", "Bob", "Alice"])
+    statement = db.select(Match).where(Match.completed == False).order_by(Match.play_date)
+    results = db.session.execute(statement).scalars()
+
+    statement = db.select(Match).where(Match.completed == True).order_by(Match.play_date.desc())
+    results2 = db.session.execute(statement).scalars()
+    return render_template("home.html", upcoming_matches=results, completed_matches=results2)
 
 @app.route("/matches")
 def matches_view():
