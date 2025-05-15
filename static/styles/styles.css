@@ -102,6 +102,10 @@ a:hover {
 #player_single h2{
     font-size: 2.4rem;
 }
+h1#vod{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
 /* body font */
 p {
   color: #e9eaec;

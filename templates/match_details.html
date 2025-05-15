@@ -1,4 +1,5 @@
 {% extends "base.html" %} {% block content %}
+<div id="match-details">
 <h2>Match Stats:</h2>
 <h1>Winner: {{ matches.winner }}</h1>
 <h1>Map: {{ matches.map }}</h1>
@@ -42,8 +43,9 @@ matches.team2_id %}
 {% endif %} {% endfor %} 
 </table>
 {% for vods in vod %}{% if vods.match_id == matches.id and matches.winner %}
-<h1>Match VOD</h1>
+<h1 id="vod">Match VOD</h1>
 <div class="iframe-container"><iframe width="720" height="320"src="{{ vods.link }}">
 </iframe></div>
+</div>
 {% endif %}{% endfor %}
 {% endblock %}
