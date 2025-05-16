@@ -5,11 +5,12 @@ Dark Grey: #33334b */
 
 /* headings */
 h1 {
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   color: #f1d131;
   text-align: center;
   text-transform: uppercase;
   font-family: cal sans;
+  margin-top: 1rem;
 }
 
 h2,h3,h4,h5,h6{
@@ -19,14 +20,19 @@ h2,h3,h4,h5,h6{
 }
 h2 {
   text-align: center;
-  padding-top: 2rem;
-  font-size: 2rem;
+  font-size: 2.2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 h3 {
   padding: 4rem;
+  font-size: 1.8rem;
+  text-align: center;
 }
 h4 {
   padding: 4rem;
+  font-size: 1.8rem;
+  text-align: center;
 }
 
 #matches h1{
@@ -43,11 +49,15 @@ h1#completed{
   padding-bottom: 1rem;
 }
 main{
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: 1.5rem;
+  padding-bottom:1.5rem;
 }
 body {
   background-color: #33334b;
+  margin: 0;
+  padding: 0;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
+  color: #e9eaec;
 }
 /* navigation */
 nav {
@@ -73,7 +83,7 @@ a {
   border-radius: 12px;
 }
 nav a {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     padding: 0.8rem 1.5rem;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     border: 2px solid #f1d131;
@@ -83,42 +93,62 @@ nav a {
     transition: all 0.3s ease;
     margin: 0 0.5rem;
   }
-a:hover {
-  color: #e9eaec;
+nav a:hover {
+   background-color: #f1d131;
+   color: white;
+   box-shadow: 0 0 10px #f1d131;
   
 }
 #matches a {
   font-size: 1.3rem;
   font-family: 'Benton Sans Extra Comp Black', sans-serif;
+  text-decoration: none;
+  
+
 }
 #players a {
   font-size: 1.3rem;
   font-family: 'Benton Sans Extra Comp Black', sans-serif;
+  text-decoration: underline;
+  
+
 }
 #teams a {
   font-size: 1.3rem;
   font-family: 'Benton Sans Extra Comp Black', sans-serif;
+  text-decoration: underline;
 }
 #player_single h2{
     font-size: 2.4rem;
+    font-size: 2.4rem;
+    color: #f1d131;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+#td a:hover,
+#matches a:hover,
+#players a:hover,
+#teams a:hover {
+  color: #e9eaec; /* white on hover */
+  text-decoration: underline;
 }
 /* body font */
 p {
   color: #e9eaec;
   font-size: 1.3rem;
-  padding-left: 4rem;
+  padding: 1rem 4rem;
+  line-height: 1.6;
   font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 /* tables */
 table {
-    width: 75%;
-    border-collapse: collapse;
-    /* Ensures borders don't double up */
-    border: 2px solid  #e9eaec;
-    /* Outer border */
-    margin-left: auto;
-    margin-right: auto;
+  width: 80%;
+  margin: 2rem auto;
+  border-collapse: collapse;
+  border: 2px solid #e9eaec;
+  background-color: rgba(219, 212, 212, 0.1);
     
 
 }
@@ -135,14 +165,43 @@ td {
 }
 
 th {
-  background-color: #0000003c;
+  background-color: rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
 }
 
 td {
   background-color: #0000001e;
 }
+
+/* ==== RESPONSIVE VIDEO / IFRAME ==== */
 .iframe-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 2rem 0;
+}
+
+iframe {
+max-width: 100%;
+border: none;
+border-radius: 8px;
+}
+
+/* ==== RESPONSIVENESS ==== */
+@media (max-width: 768px) {
+h1 {
+font-size: 2rem;
+}
+
+nav {
+flex-direction: column;
+align-items: center;
+}
+
+p {
+padding: 1rem;
+}
+
+table {
+width: 95%;
+}}
