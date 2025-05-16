@@ -1,7 +1,24 @@
-
 {% extends "base.html" %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 <h1>Marvel Rivals TV Homepage</h1>
-
+<body>
+    <h2>Upcoming Matches</h2>
+    {% for match in upcoming_matches %}
+    <h3 class="teams-in-match">{{ match.team1.name }} vs {{ match.team2.name }}</h3>
+    <p class="time-of-match"><a href="{{ url_for('matches_details', id=match.id) }}">{{ match.play_date.strftime('%B %d,
+            %Y, %I:%M %p') }}</a></p>
+    {% endfor %}
+    <h2>Completed Matches</h2>
+    {% for match in completed_matches %}
+    {% if match.winner == match.team1.name %}
+    <h3 class="teams-in-match"><u>{{ match.team1.name }}</u> vs {{ match.team2.name }}</h3>
+    {% else %}
+    <h3 class="teams-in-match">{{ match.team1.name }} vs <u>{{ match.team2.name }}</u></h3>
+    {% endif %}
+    <p class="time-of-match"><a href="{{ url_for('matches_details', id=match.id) }}">{{ match.play_date.strftime('%B %d,
+            %Y,
+            %I:%M %p') }}</a></p>
+    {% endfor %}
+</body>
 {% endblock %}

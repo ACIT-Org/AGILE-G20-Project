@@ -4,13 +4,16 @@ White: #e9eaec
 Dark Grey: #33334b */
 
 /* headings */
+
 h1 {
   font-size: 2.5rem;
   color: #f1d131;
   text-align: center;
   text-transform: uppercase;
   font-family: cal sans;
+
 }
+
 h2,h3,h4,h5,h6{
     color: #f1d131;
     font-size: 1.5rem;
@@ -27,44 +30,77 @@ h3 {
 h4 {
   padding: 4rem;
 }
+
 body {
   background-color: #33334b;
-}
+  /* background-image: url('/static/images/rivals.jpg');
+    background-repeat: repeat;
+    background-position: left center, right center;
+    background-size: 100px auto;
+    background-origin: content-box;
+    background-attachment: fixed; */
+} 
+/* main {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #33334b;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+} */
 /* navigation */
 nav {
   display: flex;
   flex-direction: row;
   align-content: center;
   justify-content: center;
+  margin-bottom: 1.5rem; 
 }
 a {
   font-size: 1.2rem;
   color: #f1d131;
   text-decoration: none;
-  padding: 2rem;
-  font-family: comic relief;
+  /* padding: 2rem; */
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+nav a {
+    font-size: 1.2rem;
+    /* padding: 0.8rem 1.5rem; */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    /* border: 2px solid #f1d131; */
+    border-radius: 10px;
+    background-color: transparent;
+    display: inline-block;
+    transition: all 0.3s ease;
+    margin: 0 0.5rem;
+  }
 a:hover {
   color: #e9eaec;
+  
 }
 #matches a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 #players a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 #teams a {
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
+}
+#player_single h2{
+    font-size: 2.4rem;
 }
 /* body font */
 p {
   color: #e9eaec;
   font-size: 1.3rem;
   padding-left: 4rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 /* tables */
@@ -77,7 +113,6 @@ table {
   margin-left: auto;
   margin-right: auto;
 }
-
 th,
 td {
   border: 2px solid #f1d131;
@@ -86,7 +121,7 @@ td {
   text-align: left;
   color: #f1d131;
   font-size: 1.3rem;
-  font-family: comic relief;
+  font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 th {
@@ -101,3 +136,64 @@ td {
       justify-content: center;
       align-items: center;
     }
+
+.teams-in-match {
+  padding: 0;
+  padding-top: 15px;
+  text-align: center;
+}
+
+.time-of-match {
+  padding: 0;
+  padding-bottom: 25px;
+  text-align: center;
+}
+
+.teams-header {
+  padding: 0;
+  text-align: center;
+  padding-top: 50px;
+  padding-right: 400px;
+}
+
+.player-name {
+  padding: 0;
+  color: #f1d131;
+  text-align: center;
+}
+
+.team-name {
+  padding-right: 950px;
+}
+
+.team-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  /* space between blocks */
+  padding: 20px;
+}
+
+.team-block {
+  color: #f1d131;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  width: calc(50% - 20px);
+  box-sizing: border-box;
+}
+
+.team-block:hover {
+  background-color: #2f2f46;
+}
+
+.nav-bar {
+  background-color:#242435;
+  padding-bottom: .25px;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
