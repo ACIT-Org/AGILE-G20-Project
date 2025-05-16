@@ -1,15 +1,15 @@
 from sqlalchemy import select
-from models import Team, Player, Match, PlayerStats, Maps, Characters, MatchVOD
+from models import Team, Player, Match, PlayerStats, Maps, Characters, MatchVOD, Admins
 from db import db
 from app import app
 import sys
 import csv
-from datetime import datetime as dt
-from datetime import timedelta
 from random import randint 
 import datetime
 from pathlib import Path
 import re
+from werkzeug.security import generate_password_hash
+
 
 def create_tables():
     """Create all database tables based on the models."""
@@ -180,42 +180,16 @@ def import_matches(filefirst, filelast):
                 db.session.add(playerstat)
 
     db.session.commit()
+
+def create_admin():
+    admin = Admins(
+        username="admin",
+        password=generate_password_hash("password123", method='pbkdf2:sha256')
+    )
+    db.session.add(admin)
+    db.session.commit()
         
-# # ------------------ Random Data Generation ------------------
-
-# def random_matches():
-#     for _ in range(30):  # Create 10 random matches
-#         # Select a random team
-#         random_team1 = db.session.execute(
-#             select(Team).order_by(db.func.random())).scalar()
-        
-#         random_team2 = db.session.execute(
-#             select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
-
-#         # Generate a random match timestamp within the past few days
-#         created_time = dt.now() - timedelta(
-#             days=randint(-10, 10),
-#             hours=randint(0, 15),
-#             minutes=randint(0, 30)
-#         )
-
-#         #random maps
-#         random_map = db.session.execute(
-#             select(Maps).order_by(db.func.random())).scalar()
-#         # Create the order
-#         match = Match(
-#             # winner=winning_team,
-#             play_date =created_time,
-#             team1 = random_team1,
-#             team2 = random_team2,
-#             map = random_map.name
-#         )
-#         db.session.add(match)
-        
-#         # random_match_player_stats(match)
-
-#     db.session.commit()  # Save all matches
-
+# ------------------ Random Data Generation ------------------
 
 def random_videos():
     vodlist = []
@@ -233,13 +207,6 @@ def random_videos():
         db.session.add(vods)
     db.session.commit()  # Save all matches
 
-# def check_if_match_is_complete():
-#     matches = db.select(Match).where(Match.completed == False)
-#     results = db.session.execute(matches).scalars().all()
-
-#     for match in results:
-#         match.completed_check()
-#     db.session.commit()
 
 # ------------------ Main Execution Block ------------------
 
@@ -271,5 +238,5 @@ if __name__ == "__main__":
         import_characters()
         import_matches(filefirst,filelast)
         random_videos()
-        # check_if_match_is_complete()
+        create_admin()
         

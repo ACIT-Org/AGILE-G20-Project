@@ -23,54 +23,6 @@ def setup_database():
 def client(setup_database):
     yield app.test_client() 
 
-# def test_match_completion_logic(client):
-#     # Create teams
-#     team1 = Team(name="Alpha")
-#     team2 = Team(name="Beta")
-#     db.session.add_all([team1, team2])
-#     db.session.commit()
-
-#     # Create a match in the past
-#     match = Match(
-#         map="Dust II",
-#         play_date=datetime.now() - timedelta(hours=2),
-#         team1_id=team1.id,
-#         team2_id=team2.id
-#     )
-#     db.session.add(match)
-#     db.session.commit()
-
-#     # Run method to mark matches completed
-#     match.completed_check()
-
-#     # Assert the match is completed and has a winner
-#     assert match.completed is True
-#     assert match.winner is not None  # Ensure a winner name is assigned
-#     assert match.winner in [team1.name, team2.name]  # The winner should be one of the team's names
-
-# def test_match_not_completed(client):
-#     # Create teams
-#     team1 = Team(name="Alpha")
-#     team2 = Team(name="Beta")
-#     db.session.add_all([team1, team2])
-#     db.session.commit()
-
-#     # Create a match in the past
-#     match = Match(
-#         map="Dust II",
-#         play_date=datetime.now() + timedelta(hours=10),
-#         team1_id=team1.id,
-#         team2_id=team2.id
-#     )
-#     db.session.add(match)
-#     db.session.commit()
-
-
-#     match.completed_check()
-
-#     # Assert the match is not completed and has no winner
-#     assert match.completed != True
-#     assert match.winner == None  
 
 def test_homepage(client):
     response = client.get("/")
@@ -231,4 +183,40 @@ def test_import_matches_invalid_filename_raises_exception():
                     import_matches(1, 1)
                 
                 assert "No valid game files found" in str(excinfo.value)
-            
+
+#Josh tests
+def test_admin_redirects_if_not_logged_in(client): 
+    response = client.get('/admin', follow_redirects=False)
+    assert response.status_code == 302
+    assert '/login' in response.headers['Location']
+
+
+def test_admin_view_if_logged_in(client):
+    with client.session_transaction() as sess:
+        sess['admin_id'] = 1  
+
+    response = client.get('/admin')
+    assert response.status_code == 200
+   
+def test_calculate_winrate(setup_database):
+    team = Team(id=1, name="G2")
+    db.session.add(team)
+
+    matches = [
+        Match(team1_id=1, team2_id=2, completed=True, winner="G2"),
+        Match(team1_id=3, team2_id=1, completed=True, winner="Team Liquid"),
+        Match(team1_id=1, team2_id=4, completed=True, winner="G2"),
+    ]
+    db.session.add_all(matches)
+    db.session.commit()
+
+    team.calculate_winrate()
+    assert team.winrate == 0.67
+
+def test_calculate_winrate_no_matches(setup_database):
+    team = Team(id=2, name="Team Liquid")
+    db.session.add(team)
+    db.session.commit()
+
+    team.calculate_winrate()
+    assert team.winrate == 0.0

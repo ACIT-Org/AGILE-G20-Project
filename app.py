@@ -115,31 +115,7 @@ def delete(id):
     player = Player.query.get_or_404(id)
     db.session.delete(player)
     db.session.commit()
-    return redirect(url_for('admin'))
-
-@app.route('/insertteam', methods=['POST'])
-def insertteam():
-    name = request.form['name']
-    new_team = Team(name=name)
-    db.session.add(new_team)
-    db.session.commit()
-    return redirect(url_for('admin'))
-
-@app.route('/updateteam', methods=['POST'])
-def updateteam():
-    team_id = request.form['id']
-    team = Team.query.get(team_id)
-    if team:
-        team.name = request.form['name']
-        db.session.commit()
-    return redirect(url_for('admin'))
-
-@app.route('/deleteteam/<int:id>', methods=['GET'])
-def deleteteam(id):
-    team = Team.query.get_or_404(id)
-    db.session.delete(team)
-    db.session.commit()
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin_view'))
 
 @app.route("/teams")
 def teams_view():
