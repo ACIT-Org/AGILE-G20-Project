@@ -39,6 +39,56 @@ def matches_details(id):
     match = db.session.execute(statement).scalar()
     return render_template("match_details.html",matches=match,teams=Team.query.all(),players=Player.query.all(),PlayerStats=PlayerStats.query.all(),vod=MatchVOD.query.all())
 
+@app.route("/supersecretpage")
+def admin_view():
+    statement = db.select(Player).order_by(Player.id)
+    results = db.session.execute(statement).scalars()
+    return render_template("admin.html", players=results)
+
+@app.route('/insert', methods=['POST'])
+def insert():
+    name = request.form['name']
+    age = request.form['age']
+    gamertag = request.form['gamertag']
+    team_name = request.form['team']
+
+    team = Team.query.filter_by(name=team_name).first()
+    if not team:
+        team = Team(name=team_name)
+        db.session.add(team)
+        db.session.commit()
+
+    new_player = Player(name=name, age=age, gamertag=gamertag, team_id=team.id)
+    db.session.add(new_player)
+    db.session.commit()
+    return redirect(url_for('admin_view'))
+#a
+@app.route('/update', methods=['POST'])
+def update():
+    player_id = request.form['id']
+    player = Player.query.get(player_id)
+    if player:
+        player.name = request.form['name']
+        player.age = request.form['age']
+        player.gamertag = request.form['gamertag']
+        team_name = request.form['team']
+
+        team = Team.query.filter_by(name=team_name).first()
+        if not team:
+            team = Team(name=team_name)
+            db.session.add(team)
+
+        player.team = team
+        db.session.commit()
+
+    return redirect(url_for('admin_view'))
+
+@app.route('/delete/<int:id>', methods=['GET'])
+def delete(id):
+    player = Player.query.get_or_404(id)
+    db.session.delete(player)
+    db.session.commit()
+    return redirect(url_for('admin_view'))
 
 @app.route("/teams")
 def teams_view():
