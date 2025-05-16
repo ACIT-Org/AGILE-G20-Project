@@ -1,5 +1,5 @@
-from sqlalchemy.orm import mapped_column, relationship
-from sqlalchemy import DECIMAL, Integer, String, ForeignKey, Boolean
+from sqlalchemy.orm import mapped_column
+from sqlalchemy import Integer, String, ForeignKey
 from db import db
 
 class MatchVOD(db.Model):

@@ -30,10 +30,11 @@
     <!-- ADD HEADERS HERE-->
     <div class="nav-bar">
     <nav>
-    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('home') }}" class="home">Marvel Rivals TV</a>
     <a href="{{ url_for('teams_view') }}">Teams</a>
     <a href="{{ url_for('players_view') }}">Players</a>
-    <a href="{{ url_for('matches_view') }}">Matches</a>
+    <a href="{{ url_for('matches_view') }}" class="matches">Matches</a>
+    <a href="{{ url_for('login') }}" class="login-button">Login</a>
     </nav>
     </div>
     {% block content %}
