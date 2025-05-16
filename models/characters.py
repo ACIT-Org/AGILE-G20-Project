@@ -1,5 +1,5 @@
-from sqlalchemy.orm import mapped_column, relationship
-from sqlalchemy import DECIMAL, Integer, String, ForeignKey
+from sqlalchemy.orm import mapped_column
+from sqlalchemy import Integer, String
 from db import db
 
 class Characters(db.Model):

@@ -5,7 +5,9 @@ from db import db
 from models import Team, Player, Maps, Characters, Match, PlayerStats
 from datetime import datetime, timedelta, timezone
 import csv
-from manage import import_players, import_maps, import_characters
+from manage import import_players, import_maps, import_characters, import_matches
+from pathlib import Path
+import re
 
 
 @pytest.fixture()
@@ -181,3 +183,52 @@ def test_import_characters(setup_database):
     #ensure data is loaded into the database correctly 
     assert character is not None
     assert character.role == "Tank"
+
+@pytest.fixture
+def match_csv():
+    return (
+        "player,team,kills,deaths,assists,damageDealt,damageBlocked,healingDone,accuracy,characterPlayed,winningTeam,timePlayed,map\n"
+        "RogueNova,Team Liquid,45,5,42,15729,6987,26680,55%,Groot,Team Liquid,May 12 2025 0846 PM,Krakoa\n"
+        "NightBloom,G2,33,17,48,23139,26613,16745,100%,Thor\n"
+    )
+
+def test_import_matches_success(setup_database, match_csv):
+    with app.app_context():
+        team1 = Team(name="Team Liquid")
+        team2 = Team(name="G2")
+        db.session.add(team1)
+        db.session.add(team2)
+        db.session.commit()
+
+        player1 = Player(gamertag="RogueNova", team_id=team1.id)
+        player2 = Player(gamertag="NightBloom", team_id=team2.id)
+        db.session.add(player1)
+        db.session.add(player2)
+        db.session.commit()
+
+    with patch("builtins.open", mock_open(read_data=match_csv)):
+        with patch("manage.Path.iterdir", return_value=[Path("data/games/game1.csv")]):
+            import_matches(1, 1)
+
+            with app.app_context():
+                matches = Match.query.all()
+                stats = PlayerStats.query.all()
+
+                assert len(matches) == 1
+                assert matches[0].winner == "Team Liquid"
+                assert matches[0].map == "Krakoa"
+                assert len(stats) == 2
+                assert stats[0].kills == 45
+                assert stats[1].characterplayed == "Thor"
+
+@pytest.mark.usefixtures("setup_database")
+def test_import_matches_invalid_filename_raises_exception():
+    with app.app_context():
+        bad_filename = "badfile.csv"
+        with patch("manage.Path.iterdir", return_value=[Path(bad_filename)]):
+            with patch("builtins.open"):
+                with pytest.raises(ValueError) as excinfo:  
+                    import_matches(1, 1)
+                
+                assert "No valid game files found" in str(excinfo.value)
+            

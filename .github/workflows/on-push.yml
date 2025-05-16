@@ -32,3 +32,6 @@ jobs:
           FLASK_ENV: testing
           FLASK_APP: app
         run: pytest
+
+      - name: Test with pytest
+        run: pytest --cov --cov-fail-under=80
