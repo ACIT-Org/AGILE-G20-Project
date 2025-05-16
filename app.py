@@ -1,13 +1,15 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session
 from pathlib import Path
-from models import Match, Player, Team, PlayerStats, MatchVOD
+from models import Match, Player, Team, PlayerStats, MatchVOD, Admins
 from db import db
 from routes.api import api_bp
 from sqlalchemy import desc, or_
 from datetime import datetime as dt
 from datetime import timedelta
+from werkzeug.security import check_password_hash
 
 app = Flask(__name__)
+app.secret_key = "sfkjshgdkjhdsagkjhaiueshoighdsaiughiudsagiudsahiuv"
 
 # This will make Flask use a 'sqlite' database with the filename provided
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -39,11 +41,36 @@ def matches_details(id):
     match = db.session.execute(statement).scalar()
     return render_template("match_details.html",matches=match,teams=Team.query.all(),players=Player.query.all(),PlayerStats=PlayerStats.query.all(),vod=MatchVOD.query.all())
 
-@app.route("/supersecretpage")
-def admin_view():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        admins = db.session.execute(db.select(Admins).where(Admins.username == username)).scalar()
+
+        if admins and check_password_hash(admins.password, password):
+            session['admin_id'] = admins.id
+            session['logged_in'] = True
+            return redirect(url_for('admin'))
+        else:
+            return redirect(url_for('login'))
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()  
+    return redirect(url_for('home'))
+
+@app.route("/admin")
+def admin():
+    if 'admin_id' not in session:
+        return redirect(url_for('login'))
+    
     statement = db.select(Player).order_by(Player.id)
     results = db.session.execute(statement).scalars()
-    return render_template("admin.html", players=results)
+    return render_template("admin.html", players=results, team=Team.query.all())
 
 @app.route('/insert', methods=['POST'])
 def insert():
@@ -61,8 +88,8 @@ def insert():
     new_player = Player(name=name, age=age, gamertag=gamertag, team_id=team.id)
     db.session.add(new_player)
     db.session.commit()
-    return redirect(url_for('admin_view'))
-#a
+    return redirect(url_for('admin'))
+
 @app.route('/update', methods=['POST'])
 def update():
     player_id = request.form['id']
@@ -81,14 +108,38 @@ def update():
         player.team = team
         db.session.commit()
 
-    return redirect(url_for('admin_view'))
+    return redirect(url_for('admin'))
 
 @app.route('/delete/<int:id>', methods=['GET'])
 def delete(id):
     player = Player.query.get_or_404(id)
     db.session.delete(player)
     db.session.commit()
-    return redirect(url_for('admin_view'))
+    return redirect(url_for('admin'))
+
+@app.route('/insertteam', methods=['POST'])
+def insertteam():
+    name = request.form['name']
+    new_team = Team(name=name)
+    db.session.add(new_team)
+    db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/updateteam', methods=['POST'])
+def updateteam():
+    team_id = request.form['id']
+    team = Team.query.get(team_id)
+    if team:
+        team.name = request.form['name']
+        db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/deleteteam/<int:id>', methods=['GET'])
+def deleteteam(id):
+    team = Team.query.get_or_404(id)
+    db.session.delete(team)
+    db.session.commit()
+    return redirect(url_for('admin'))
 
 @app.route("/teams")
 def teams_view():
@@ -122,6 +173,7 @@ def team_name(name):
     
     return render_template(
        "team_details.html", 
+       winrate = found_team.winrate,
        team=team_players, 
        name = ' '.join([word.capitalize() for word in name.split()]),
        upcoming_matches = upcoming, 
@@ -132,7 +184,8 @@ def team_name(name):
 def players_view():
     statement = db.select(Player).order_by(Player.id)
     results = db.session.execute(statement).scalars()
-    return render_template("players.html", players=results)
+    noteamresults = db.session.execute(db.select(Player).where(Player.team_id == None)).scalars()
+    return render_template("players.html", players=results,playersnoteam=noteamresults)
 
 @app.route(("/players/<int:id>"))
 def player_id(id):
