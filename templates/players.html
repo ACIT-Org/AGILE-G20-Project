@@ -9,7 +9,13 @@
       {% elif loop.index0 == 0 %}
         <h3 class="teams-header"> {{ row.team.name }} </h3>
       {% endif %}
-      <p class="player-name">{{ row.name }} as <a href="{{ url_for('player_id', id=row.id) }}"> {{ row.gamertag }} </p>
+      {% if row.team %}
+      <p class="player-name">{{ row.name }} as <a href="{{ url_for('player_id', id=row.id) }}"> {{ row.gamertag }}</a> </p>
+        {% endif %}
+    {% endfor %}
+<h3 class="teams-header"> Teamless Players </h3>
+    {% for row in playersnoteam %}
+        <p class="player-name">{{ row.name }} as <a href="{{ url_for('player_id', id=row.id) }}"> {{ row.gamertag }}</a> </p>
     {% endfor %}
 
     <!-- <table id="players">

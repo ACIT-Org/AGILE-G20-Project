@@ -70,7 +70,7 @@ def admin():
     
     statement = db.select(Player).order_by(Player.id)
     results = db.session.execute(statement).scalars()
-    return render_template("admin.html", players=results)
+    return render_template("admin.html", players=results, team=Team.query.all())
 
 @app.route('/insert', methods=['POST'])
 def insert():
@@ -117,6 +117,30 @@ def delete(id):
     db.session.commit()
     return redirect(url_for('admin'))
 
+@app.route('/insertteam', methods=['POST'])
+def insertteam():
+    name = request.form['name']
+    new_team = Team(name=name)
+    db.session.add(new_team)
+    db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/updateteam', methods=['POST'])
+def updateteam():
+    team_id = request.form['id']
+    team = Team.query.get(team_id)
+    if team:
+        team.name = request.form['name']
+        db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/deleteteam/<int:id>', methods=['GET'])
+def deleteteam(id):
+    team = Team.query.get_or_404(id)
+    db.session.delete(team)
+    db.session.commit()
+    return redirect(url_for('admin'))
+
 @app.route("/teams")
 def teams_view():
     statement = db.select(Team).order_by(Team.id)
@@ -160,7 +184,8 @@ def team_name(name):
 def players_view():
     statement = db.select(Player).order_by(Player.id)
     results = db.session.execute(statement).scalars()
-    return render_template("players.html", players=results)
+    noteamresults = db.session.execute(db.select(Player).where(Player.team_id == None)).scalars()
+    return render_template("players.html", players=results,playersnoteam=noteamresults)
 
 @app.route(("/players/<int:id>"))
 def player_id(id):

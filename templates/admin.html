@@ -36,7 +36,7 @@
 
 
 
-    <!-- Enter New Student Modal -->
+    <!-- Enter New Player Modal -->
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -82,7 +82,7 @@
     </div>
 
 
-    <!-- End of Enter New Student Modal -->
+    <!-- End of Enter New Player Modal -->
 
 
 
@@ -113,7 +113,7 @@
     </tr>
 
 
-        <!-- Enter New Student Modal -->
+        <!-- Enter New Player Modal -->
         <div id="modaledit{{ row.id }}" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -161,7 +161,104 @@
         </div>
     
     
-        <!-- End of Edit Student Modal -->
+        <!-- End of Edit Player Modal -->
+
+
+
+
+        {% endfor %}
+    </tbody>
+
+</table>
+<h2 >Team List <button class="btn btn-primary float-right" data-toggle="modal" data-target="#myModal2">Add Team</button></h2>
+    <!-- Enter New Team Modal -->
+    <div id="myModal2" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+   
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" style="align-content: center;">Add New Team</h5>    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  
+
+                <div class="modal-body">
+                    
+                    <form action="{{ url_for('insertteam')}}" method="POST">
+                        <div class="form-group">
+                          <label>Full Name</label>
+                          <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="Enter Full Name">
+                        </div>
+                          <button type="submit" class="btn btn-primary mb-2">Save</button>            
+                      </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- End of Enter New Team Modal -->
+
+
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in team %}
+        <tr>
+        <td>{{row.id}}</td>
+        <td>{{row.name}}</td>
+        <td>
+            <a href="/updateteam/{{ row.id }}" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal2edit{{row.id}}">Edit</a>
+            <a href="/deleteteam/{{ row.id }}" onclick="return confirm('Are Sure Want To Delete?')" class="btn btn-danger btn-sm">Delete</a>
+
+        </td>
+    </tr>
+
+
+        <!-- Enter New Team Modal -->
+        <div id="modal2edit{{ row.id }}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+       
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary" style="align-content: center;">Update Team</h5>    
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      
+    
+                    <div class="modal-body">
+                        
+                        <form action="{{ url_for('updateteam')}}" method="POST">
+                            <input type="hidden" name="id" value="{{row.id}}">
+                            <div class="form-group">
+                              <label>Name</label>
+                              <input value="{{row.name}}" type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="Enter Full Name">
+                            </div>
+                              <button type="submit" class="btn btn-success mb-2">Update</button>
+                         
+                          </form>
+    
+    
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    
+    
+        <!-- End of Edit Team Modal -->
 
 
 
@@ -178,6 +275,16 @@
 
         </div>
     </div>
+            </div>
+            <!-- Content ends here-->
+
+
+            <div class="col-sm-2"></div>
+
+        </div>
+    </div>
+
+
 
  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>    
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

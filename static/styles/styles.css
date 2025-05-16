@@ -151,9 +151,12 @@ td {
 
 .teams-header {
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   padding-top: 50px;
-  padding-right: 400px;
+  padding-bottom: 25px;
 }
 
 .player-name {
