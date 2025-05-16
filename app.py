@@ -1,13 +1,15 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session
 from pathlib import Path
-from models import Match, Player, Team, PlayerStats, MatchVOD
+from models import Match, Player, Team, PlayerStats, MatchVOD, Admins
 from db import db
 from routes.api import api_bp
 from sqlalchemy import desc, or_
 from datetime import datetime as dt
 from datetime import timedelta
+from werkzeug.security import check_password_hash
 
 app = Flask(__name__)
+app.secret_key = "sfkjshgdkjhdsagkjhaiueshoighdsaiughiudsagiudsahiuv"
 
 # This will make Flask use a 'sqlite' database with the filename provided
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -39,8 +41,33 @@ def matches_details(id):
     match = db.session.execute(statement).scalar()
     return render_template("match_details.html",matches=match,teams=Team.query.all(),players=Player.query.all(),PlayerStats=PlayerStats.query.all(),vod=MatchVOD.query.all())
 
-@app.route("/supersecretpage")
-def admin_view():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        admins = db.session.execute(db.select(Admins).where(Admins.username == username)).scalar()
+
+        if admins and check_password_hash(admins.password, password):
+            session['admin_id'] = admins.id
+            session['logged_in'] = True
+            return redirect(url_for('admin'))
+        else:
+            return redirect(url_for('login'))
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()  
+    return redirect(url_for('home'))
+
+@app.route("/admin")
+def admin():
+    if 'admin_id' not in session:
+        return redirect(url_for('login'))
+    
     statement = db.select(Player).order_by(Player.id)
     results = db.session.execute(statement).scalars()
     return render_template("admin.html", players=results)
@@ -62,7 +89,7 @@ def insert():
     db.session.add(new_player)
     db.session.commit()
     return redirect(url_for('admin_view'))
-#a
+
 @app.route('/update', methods=['POST'])
 def update():
     player_id = request.form['id']
