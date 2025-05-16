@@ -245,3 +245,11 @@ button {
 button:hover {
   background-color: #45a049;
 }
+
+.home {
+  padding-right: 300px;
+}
+
+.matches {
+  padding-right:370px;
+}
