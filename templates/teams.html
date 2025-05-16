@@ -2,7 +2,12 @@
 {% block content %}
   <body id="team_id">
     <h1>Teams</h1>
-    <table id="teams">
+    <div class="team-container">
+      {% for row in teams %}
+      <a class="team-block" href="{{ url_for('team_name', name=row.name) }}">{{ row.name }}</a>
+      {% endfor %}
+    </div>
+    <!-- <table id="teams">
         <th>Name</th>
       </tr>
       {% for row in teams %}
@@ -14,6 +19,6 @@
       </tr>
       {% endfor %}
 
-    </table>
+    </table> -->
   </body>
 {% endblock %}

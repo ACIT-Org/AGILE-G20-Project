@@ -1,15 +1,15 @@
 from sqlalchemy import select
-from models import Team, Player, Match, PlayerStats, Maps, Characters, MatchVOD
+from models import Team, Player, Match, PlayerStats, Maps, Characters, MatchVOD, Admins
 from db import db
 from app import app
 import sys
 import csv
-from datetime import datetime as dt
-from datetime import timedelta
 from random import randint 
 import datetime
 from pathlib import Path
 import re
+from werkzeug.security import generate_password_hash
+
 
 def create_tables():
     """Create all database tables based on the models."""
@@ -72,23 +72,25 @@ def import_characters():
 
         db.session.commit()  
 
-def import_matches(filefirst,filelast):
 
-    folder_path=Path("data/games/")
-
-    if folder_path.exists() and folder_path.is_dir():
-        files=[]
-        for item in folder_path.iterdir():
-            if item.is_file():
-                files.append(item.name)
+def import_matches(filefirst, filelast):
+    folder_path = Path("data/games/")
     
-    pattern = r'^game\d+\.csv$'
-
-    for file in files:
-        if re.fullmatch(pattern,file):
-            pass
-        else:
-            raise Exception("File in foler does not match pattern of game_.csv")
+    if not folder_path.exists() or not folder_path.is_dir():
+        raise ValueError(f"Directory not found: {folder_path}")
+    
+    pattern = r'^game\d+\.csv$' 
+    valid_files = []
+    
+    for item in folder_path.iterdir():
+        if item.is_file():
+            if re.fullmatch(pattern, item.name):
+                valid_files.append(item)
+            else:
+                raise ValueError(f"File '{item.name}' does not match required pattern 'game<number>.csv'")
+    
+    if not valid_files:
+        raise ValueError("No valid game files found in directory")
 
     filefirst = int(filefirst)
     filelast = int(filelast)
@@ -141,72 +143,53 @@ def import_matches(filefirst,filelast):
             team2=teams[1]
             team2=db.session.execute(select(Team).where(Team.name == team2)).scalar()
 
+
             play_date = datetime.datetime.strptime(time, "%b %d %Y %I%M %p")
+            now = datetime.datetime.now()
+            completed = False
+            if now > play_date:
+                completed = True
 
             match = Match(
                 winner=winner,
                 play_date =play_date,
                 team1 = team1,
                 team2 = team2,
-                map = map
+                map = map,
+                completed=completed
             )
 
             db.session.add(match)
 
             for line in cleaned_data:
-                player = db.session.execute(select(Player).where(Player.gamertag == line["player"])).scalar()
-                playerstat =PlayerStats(
-                    player_id = player.id,
-                    match_id = match.id,
-                    kills=line["kills"],
-                    deaths=line["deaths"],
-                    assists = line["assists"],
-                    damageDealt = line["damageDealt"],
-                    damageBlocked = line["damageBlocked"],
-                    healing = line["healingDone"],
-                    accuracy = line["accuracy"],
-                    characterplayed = line["characterPlayed"]
-                )
+                if completed:
+                    player = db.session.execute(select(Player).where(Player.gamertag == line["player"])).scalar()
+                    playerstat =PlayerStats(
+                        player_id = player.id,
+                        match_id = match.id,
+                        kills=line["kills"],
+                        deaths=line["deaths"],
+                        assists = line["assists"],
+                        damageDealt = line["damageDealt"],
+                        damageBlocked = line["damageBlocked"],
+                        healing = line["healingDone"],
+                        accuracy = line["accuracy"],
+                        characterplayed = line["characterPlayed"]
+                    )
 
                 db.session.add(playerstat)
 
     db.session.commit()
+
+def create_admin():
+    admin = Admins(
+        username="admin",
+        password=generate_password_hash("password123", method='pbkdf2:sha256')
+    )
+    db.session.add(admin)
+    db.session.commit()
         
-# # ------------------ Random Data Generation ------------------
-
-# def random_matches():
-#     for _ in range(30):  # Create 10 random matches
-#         # Select a random team
-#         random_team1 = db.session.execute(
-#             select(Team).order_by(db.func.random())).scalar()
-        
-#         random_team2 = db.session.execute(
-#             select(Team).where(Team.name != random_team1.name).order_by(db.func.random())).scalar()
-
-#         # Generate a random match timestamp within the past few days
-#         created_time = dt.now() - timedelta(
-#             days=randint(-10, 10),
-#             hours=randint(0, 15),
-#             minutes=randint(0, 30)
-#         )
-
-#         #random maps
-#         random_map = db.session.execute(
-#             select(Maps).order_by(db.func.random())).scalar()
-#         # Create the order
-#         match = Match(
-#             # winner=winning_team,
-#             play_date =created_time,
-#             team1 = random_team1,
-#             team2 = random_team2,
-#             map = random_map.name
-#         )
-#         db.session.add(match)
-        
-#         # random_match_player_stats(match)
-
-#     db.session.commit()  # Save all matches
-
+# ------------------ Random Data Generation ------------------
 
 def random_videos():
     vodlist = []
@@ -224,13 +207,6 @@ def random_videos():
         db.session.add(vods)
     db.session.commit()  # Save all matches
 
-# def check_if_match_is_complete():
-#     matches = db.select(Match).where(Match.completed == False)
-#     results = db.session.execute(matches).scalars().all()
-
-#     for match in results:
-#         match.completed_check()
-#     db.session.commit()
 
 # ------------------ Main Execution Block ------------------
 
@@ -245,6 +221,7 @@ if __name__ == "__main__":
 
     filefirst = sys.argv[2]
     if len(sys.argv) < 4:
+        filefirst = 1
         filelast = sys.argv[2]
     else:
         filelast = sys.argv[3]
@@ -261,5 +238,5 @@ if __name__ == "__main__":
         import_characters()
         import_matches(filefirst,filelast)
         random_videos()
-        # check_if_match_is_complete()
+        create_admin()
         

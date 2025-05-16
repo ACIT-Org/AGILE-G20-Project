@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-  <body id="team_details">
-    <h2>{{ name }} Details</h2>
-    <table>
+
+  <body>
+    <h2 class="team-name">{{ name }}</h2>
+      {% for row in team %}
+        <p class="player-name">{{ row.name }} as <a href="{{ url_for('player_id', id=row.id) }}"> {{ row.gamertag }} </p>
+      {% endfor %}
+    <!-- <table>
       <th>Players</th>
         <th>Name</th>
         <th>Age</th>
@@ -15,15 +19,24 @@
           <td>{{ row.age }}</td>
       </tr>
       {% endfor %}
-    </table>
+    </table> -->
     
+<<<<<<< HEAD
     <h3>Team Winrate:</h3>
     <p>{{ winrate * 100 }}%</p>
+=======
+    <!-- <h3>Team Winrate:</h3>
+    <p>*not implemented yet*</p> -->
+>>>>>>> dev
 
     <h3>Upcoming Matches</h3>
-    <table>
+    {% for match in upcoming_matches %}
+      <h3 class="teams-in-match">{{ match.team1.name }} vs {{ match.team2.name }}</h3>
+      <p class="time-of-match"><a href="{{ url_for('matches_details', id=match.id) }}">{{ match.play_date.strftime('%B %d, %Y,
+          %I:%M %p') }}</a></p>
+    {% endfor %}
+    <!-- <table>
       <tr>
-        <!-- <th>Match ID</th> -->
         <th>Team 1</th>
         <th>Team 2</th>
 
@@ -32,7 +45,6 @@
       </tr>
       {% for match in upcoming_matches %}
       <tr>
-        <!-- <td>{{ match.id }}</td> -->
         <td>{{ match.team1.name }}</td>
         <td>{{ match.team2.name }}</td>
 
@@ -40,12 +52,20 @@
         <td>{{ match.map }}</td>
       </tr>
       {% endfor %}
-    </table>
+    </table> -->
   
     <h3>Completed Matches</h3>
-    <table>
+    {% for match in completed_matches %}
+      {% if match.winner == match.team1.name %}
+      <h3 class="teams-in-match"><u>{{ match.team1.name }}</u> vs {{ match.team2.name }}</h3>
+      {% else %}
+      <h3 class="teams-in-match">{{ match.team1.name }} vs <u>{{ match.team2.name }}</u></h3>
+      {% endif %}
+      <p class="time-of-match"><a href="{{ url_for('matches_details', id=match.id) }}">{{ match.play_date.strftime('%B %d, %Y,
+          %I:%M %p') }}</a></p>
+    {% endfor %}
+    <!-- <table>
       <tr>
-        <!-- <th>Match ID</th> -->
         <th>Team 1</th>
         <th>Team 2</th>
         <th>Played Date</th>
@@ -54,7 +74,6 @@
       </tr>
       {% for match in completed_matches %}
       <tr>
-        <!-- <td>{{ match.id }}</td> -->
         <td>{{ match.team1.name }}</td>
         <td>{{ match.team2.name }}</td>
         
@@ -63,6 +82,6 @@
         <td>{{ match.winner }}</td>
       </tr>
       {% endfor %}
-    </table>
+    </table> -->
   </body>
 {% endblock %}
