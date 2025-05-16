@@ -88,7 +88,7 @@ def insert():
     new_player = Player(name=name, age=age, gamertag=gamertag, team_id=team.id)
     db.session.add(new_player)
     db.session.commit()
-    return redirect(url_for('admin_view'))
+    return redirect(url_for('admin'))
 
 @app.route('/update', methods=['POST'])
 def update():
@@ -108,14 +108,14 @@ def update():
         player.team = team
         db.session.commit()
 
-    return redirect(url_for('admin_view'))
+    return redirect(url_for('admin'))
 
 @app.route('/delete/<int:id>', methods=['GET'])
 def delete(id):
     player = Player.query.get_or_404(id)
     db.session.delete(player)
     db.session.commit()
-    return redirect(url_for('admin_view'))
+    return redirect(url_for('admin'))
 
 @app.route("/teams")
 def teams_view():
