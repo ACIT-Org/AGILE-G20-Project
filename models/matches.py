@@ -30,24 +30,6 @@ class Match(db.Model):
     #     else:
     #         winning_team = self.team2
 
-<<<<<<< HEAD
-        self.winner = winning_team.name
-        self.random_match_player_stats()
-        self.completed = True
-        db.session.commit()
-        
-        self.team1.calculate_winrate()
-        self.team2.calculate_winrate()
-        
-
-    def completed_check(self):
-        if not self.completed:
-            # check if match time had passed
-            if self.play_date < dt.now() - timedelta(hours=0):
-                self.complete_match()
-                db.session.commit()
-                
-=======
     #     self.winner = winning_team.name
     #     self.random_match_player_stats()
     #     self.completed = True
@@ -58,7 +40,6 @@ class Match(db.Model):
     #         if self.play_date < dt.now() - timedelta(hours=0):
     #             self.complete_match()
     #             db.session.commit()
->>>>>>> dev
     
     # def random_match_player_stats(self):
     #     random_team1 = self.team1
