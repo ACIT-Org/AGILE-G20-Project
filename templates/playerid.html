@@ -11,7 +11,7 @@
         <p>{{ player.name }}</p>
         {% if player.team %}
         <p><a href="{{url_for('team_name', name=player.team.name )}}"><img src="{{ url_for('static', filename='images/' + player.team.name + '.png') }}" alt="{{ player.team.name }}"
-          class="team-logo">{{player.team.name}}</a></p>
+          class="team-logo"></a></p>
         {% else %}
         <p> Free Agent</p>
         {% endif %}
