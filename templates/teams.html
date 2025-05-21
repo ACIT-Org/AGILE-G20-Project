@@ -4,7 +4,10 @@
     <h1>Teams</h1>
     <div class="team-container">
       {% for row in teams %}
-      <a class="team-block" href="{{ url_for('team_name', name=row.name) }}">{{ row.name }}</a>
+      <a class="team-block" href="{{ url_for('team_name', name=row.name) }}">
+        <img src="{{ url_for('static', filename='images/' + row.name + '.png') }}" alt="{{ row.name }}" class="team-logo">
+        {{ row.name }}
+      </a>
       {% endfor %}
     </div>
     <!-- <table id="teams">

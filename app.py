@@ -184,8 +184,9 @@ def team_name(name):
 def players_view():
     statement = db.select(Player).order_by(Player.id)
     results = db.session.execute(statement).scalars()
+    teams = db.session.execute(db.select(Team)).scalars()
     noteamresults = db.session.execute(db.select(Player).where(Player.team_id == None)).scalars()
-    return render_template("players.html", players=results,playersnoteam=noteamresults)
+    return render_template("players.html", players=results,playersnoteam=noteamresults,teams=teams)
 
 @app.route(("/players/<int:id>"))
 def player_id(id):

@@ -1,12 +1,20 @@
 {% extends "base.html" %} {% block content %}
-<h2>Match Stats:</h2>
-<h1>Winner: {{ matches.winner }}</h1>
-<h1>Map: {{ matches.map }}</h1>
-<h1>Date: {{ matches.play_date.strftime('%B %d, %Y, %I:%M %p') }}</h1>
-<h1>Teams: {{ matches.team1.name }} vs. {{ matches.team2.name }}</h1>
+<h1>Match Stats</h1>
+<h2>
+  <img src="{{ url_for('static', filename='images/' + matches.team1.name + '.png') }}" alt="{{ matches.team1.name  }}" class="team-logo">
+  {{ matches.team1.name }} vs. {{ matches.team2.name }}
+  <img src="{{ url_for('static', filename='images/' + matches.team2.name + '.png') }}" alt="{{ matches.team2.name  }}" class="team-logo">
+</h2>
+<h2>{{ matches.play_date.strftime('%B %d, %Y, %I:%M %p') }}</h2>
+<h2>Winner: {{ matches.winner }}</h2>
+{% if matches.completed == 1 %}
+  <h2>Map: {{ matches.map }}</h2>
+{% endif %}
+
+
 {% if matches.completed == 1 %} {% for team in teams %} {% if team.id ==
 matches.team1_id or team.id == matches.team2_id %}
-<h2>{{ team.name }} Stats</h2>
+<h2 class="team-name-matches">{{ team.name }} Stats</h2>
 <table>
   <tr>
     <th>Player</th>

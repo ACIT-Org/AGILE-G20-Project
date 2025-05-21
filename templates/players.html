@@ -3,37 +3,44 @@
 
   <body id="players_id">
     <h1>Players</h1>
-    {% for row in players %}
+
+    {% for team in teams %}
+        {% if team is not none %}
+          <h3 class="teams-header">
+            <a href="{{url_for('team_name', name=team.name )}}">
+            <img src="{{ url_for('static', filename='images/' + team.name + '.png') }}" alt="{{ team.name }}"
+              class="team-logo">
+            {{ team.name }}
+            </a>
+          </h3>
+        {% endif %}
+        {% for player in team.players %}
+          <p class="player-name"><a href="{{ url_for('player_id', id=player.id) }}">{{ player.name }} as {{ player.gamertag }}</a> </p>
+        {% endfor %}
+    {% endfor %}
+    <!-- {% for row in players %}
+      {% if row.team is not none %}
       {% if loop.index0 % 6 == 0 %}
-        <h3 class="teams-header"> {{ row.team.name }} </h3>
+        <h3 class="teams-header"> 
+          <img src="{{ url_for('static', filename='images/' + row.team.name + '.png') }}" alt="{{ row.team.name }}" class="team-logo">
+          {{ row.team.name }} 
+        </h3>
       {% elif loop.index0 == 0 %}
-        <h3 class="teams-header"> {{ row.team.name }} </h3>
+        <h3 class="teams-header"> 
+          <img src="{{ url_for('static', filename='images/' + row.team.name + '.png') }}" alt="{{ row.team.name }}"
+          class="team-logo">
+          {{ row.team.name }} 
+        </h3>
+      {% endif %}
       {% endif %}
       {% if row.team %}
       <p class="player-name">{{ row.name }} as <a href="{{ url_for('player_id', id=row.id) }}"> {{ row.gamertag }}</a> </p>
-        {% endif %}
-    {% endfor %}
+      {% endif %}
+    {% endfor %} -->
 <h3 class="teams-header"> Teamless Players </h3>
     {% for row in playersnoteam %}
-        <p class="player-name">{{ row.name }} as <a href="{{ url_for('player_id', id=row.id) }}"> {{ row.gamertag }}</a> </p>
+        <p class="player-name"><a href="{{ url_for('player_id', id=row.id) }}">{{ row.name }} as  {{ row.gamertag }} </a></p>
     {% endfor %}
-
-    <!-- <table id="players">
-        <th>Username</th>
-        <th>Name</th>
-
-        <th>Team</th>
-      </tr>
-      {% for row in players %}
-      <tr>
-        <td><a href="{{ url_for('player_id', id=row.id) }}">{{ row.gamertag }}</td>
-        <td>{{ row.name }}</td>
-
-        <td>{{ row.team.name }}</td>
-      </tr>
-      {% endfor %}
-
-    </table> -->
   </body>
 
   {% endblock %}
