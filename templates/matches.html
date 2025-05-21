@@ -2,58 +2,58 @@
 <body>  
   <h1>Upcoming Matches</h1>
   {% for match in upcoming_matches %}
-    <h3 class="teams-in-match">{{ match.team1.name }} vs {{ match.team2.name }}</h3>
-    <p class="time-of-match"><a href="{{ url_for('matches_details', id=match.id) }}">{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</a></p>
+    {% if match.team1 is not none and match.team2 is not none %}
+    <h3 class="teams-in-match">
+      <a href="{{url_for('team_name', name=match.team1.name )}}">
+      <img src="{{ url_for('static', filename='images/' + match.team1.name + '.png') }}" alt="{{ match.team1.name  }}"
+      class="team-logo">
+      </a>
+      <a href="{{ url_for('matches_details', id=match.id) }}">
+        {{ match.team1.name }} vs {{ match.team2.name }}
+      </a>
+      <a href="{{url_for('team_name', name=match.team2.name )}}">
+      <img src="{{ url_for('static', filename='images/' + match.team2.name + '.png') }}" alt="{{ match.team2.name  }}"
+      class="team-logo">
+      </a>
+    </h3>
+    <p class="time-of-match">{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</p>
+    {% endif %}
   {% endfor %}
-  <!-- <table id="matches">
-    <tr>
-      <th>Team 1</th>
-      <th>Team 2</th>
-
-      <th>Played Date</th>
-      <th>Map</th>
-    </tr>
-    {% for match in upcoming_matches %}
-    <tr>
-      <td>{{ match.team1.name }}</td>
-      <td>{{ match.team2.name }}</td>
-
-      <td><a href="{{ url_for('matches_details', id=match.id) }}">{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</a></td>
-      <td>{{ match.map }}</td>
-    </tr>
-    {% endfor %}
-  </table> -->
 
   <h1>Completed Matches</h1>
   {% for match in completed_matches %}
+    {% if match.team1 is not none and match.team2 is not none %}
     {% if match.winner == match.team1.name %}
-    <h3 class="teams-in-match"><u>{{ match.team1.name }}</u> vs {{ match.team2.name }}</h3>
+    <h3 class="teams-in-match">
+      <a href="{{url_for('team_name', name=match.team1.name )}}">
+        <img src="{{ url_for('static', filename='images/' + match.team1.name + '.png') }}" alt="{{ match.team1.name  }}"
+          class="team-logo">
+      </a>
+      <a href="{{ url_for('matches_details', id=match.id) }}">
+        <u>{{ match.team1.name }}</u> vs {{ match.team2.name }}
+      </a>
+      <a href="{{url_for('team_name', name=match.team2.name )}}">
+        <img src="{{ url_for('static', filename='images/' + match.team2.name + '.png') }}" alt="{{ match.team2.name  }}"
+          class="team-logo">
+      </a>
+    </h3>
     {% else %}
-    <h3 class="teams-in-match">{{ match.team1.name }} vs <u>{{ match.team2.name }}</u></h3>
+    <h3 class="teams-in-match">
+      <a href="{{url_for('team_name', name=match.team1.name )}}">
+        <img src="{{ url_for('static', filename='images/' + match.team1.name + '.png') }}" alt="{{ match.team1.name  }}"
+          class="team-logo">
+      </a>
+      <a href="{{ url_for('matches_details', id=match.id) }}">
+        {{ match.team1.name }} vs <u>{{ match.team2.name }}</u>
+      </a>
+      <a href="{{url_for('team_name', name=match.team2.name )}}">
+        <img src="{{ url_for('static', filename='images/' + match.team2.name + '.png') }}" alt="{{ match.team2.name  }}"
+          class="team-logo">
+      </a>
+    </h3>
     {% endif %}
-    <p class="time-of-match"><a href="{{ url_for('matches_details', id=match.id) }}">{{ match.play_date.strftime('%B %d, %Y,
-        %I:%M %p') }}</a></p>
+    <p class="time-of-match">{{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</p>
+  {% endif %}
   {% endfor %}
-  <!-- <table>
-    <tr>
-      <th>Team 1</th>
-      <th>Team 2</th>
-
-      <th>Played Date</th>
-      <th>Map</th>
-      <th>Winner</th>
-    </tr>
-    {% for match in completed_matches %}
-    <tr>
-      <td>{{ match.team1.name }}</td>
-      <td>{{ match.team2.name }}</td>
-
-      <td><a href="{{ url_for('matches_details', id=match.id) }}">
-        {{ match.play_date.strftime('%B %d, %Y, %I:%M %p') }}</a></td>
-      <td>{{ match.map }}</td>
-      <td>{{ match.winner }}</td>
-    </tr>
-    {% endfor %}
-  </table> -->
 </body>
 {% endblock %}

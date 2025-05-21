@@ -7,17 +7,17 @@ Dark Grey: #33334b */
 
 h1 {
   font-size: 2.5rem;
-  color: #f1d131;
+  color: #2E2F5F;
   text-align: center;
   text-transform: uppercase;
-  font-family: cal sans;
+  font-family: Verdana,Geneva,sans-serif;
 
 }
 
 h2,h3,h4,h5,h6{
-    color: #f1d131;
+    color: #2E2F5F;
     font-size: 1.5rem;
-    font-family: cal sans;
+    font-family: Verdana,Geneva,sans-serif;
 }
 h2 {
   text-align: center;
@@ -32,24 +32,9 @@ h4 {
 }
 
 body {
-  background-color: #33334b;
-  /* background-image: url('/static/images/rivals.jpg');
-    background-repeat: repeat;
-    background-position: left center, right center;
-    background-size: 100px auto;
-    background-origin: content-box;
-    background-attachment: fixed; */
+  background-color:#A6ACD0;
 } 
-/* main {
-  max-width: 900px;
-  margin: 0 auto;
-  background-color: #33334b;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1;
-} */
-/* navigation */
+
 nav {
   display: flex;
   flex-direction: row;
@@ -57,7 +42,12 @@ nav {
   justify-content: center;
   margin-bottom: 1.5rem; 
 }
+
 a {
+  color: #2E2F5F
+}
+
+nav a {
   font-size: 1.2rem;
   color: #f1d131;
   text-decoration: none;
@@ -76,6 +66,10 @@ nav a {
     transition: all 0.3s ease;
     margin: 0 0.5rem;
   }
+
+a {
+    text-decoration: none;
+}
 a:hover {
   color: #e9eaec;
   
@@ -97,7 +91,7 @@ a:hover {
 }
 /* body font */
 p {
-  color: #e9eaec;
+  color: #2E2F5F;
   font-size: 1.3rem;
   padding-left: 4rem;
   font-family: 'Benton Sans Extra Comp Black', sans-serif;
@@ -112,29 +106,38 @@ table {
   /* Outer border */
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 40px;
 }
+
 th,
 td {
-  border: 2px solid #f1d131;
+  border: 2px solid #2E2F5F;
   /* Borders inside the table */
   padding: 8px;
   text-align: left;
-  color: #f1d131;
+  color: #2E2F5F;
   font-size: 1.3rem;
   font-family: 'Benton Sans Extra Comp Black', sans-serif;
 }
 
 th {
-  background-color: #0000003c;
+  color: #f1d131;
+  background-color: #00000058;
 }
 
-td {
-  background-color: #0000001e;
+tr:nth-child(even) {
+  background-color: #00000014;
 }
+
+tr:nth-child(odd) {
+  background-color: #0000003e;
+}
+
 .iframe-container {
       display: flex;
       justify-content: center;
       align-items: center;
+      padding-bottom:20px;
     }
 
 .teams-in-match {
@@ -161,7 +164,7 @@ td {
 
 .player-name {
   padding: 0;
-  color: #f1d131;
+  color: #2E2F5F;
   text-align: center;
 }
 
@@ -178,7 +181,7 @@ td {
 }
 
 .team-block {
-  color: #f1d131;
+  color: #2E2F5F;
   padding: 15px 25px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -195,9 +198,14 @@ td {
 }
 
 .nav-bar {
-  background-color:#242435;
+  background-color:#2E2F5F;
   padding-bottom: .25px;
   padding-top: 20px;
+}
+
+.bottom-border {
+  padding:10px;
+  background-color:#D2DDFD;
   margin-bottom: 20px;
 }
 
@@ -252,4 +260,65 @@ button:hover {
 
 .matches {
   padding-right:370px;
+}
+
+.team-logo {
+  width: 125px;
+  height: 100px;
+  object-position: center;
+}
+.player-card {
+  max-width: 2200px;
+  /* Adjust as needed */
+}
+
+.player-content {
+  display: flex;
+}
+
+.player-image {
+  max-width: 400px;
+  height: auto;
+
+}
+
+.player-gamertag {
+  align-items: center;
+}
+
+.player-avatar {
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  margin-left: 40px;
+  border: 10px solid #b3c3f2;
+  border-radius:10px;
+}
+
+.player-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* Focus on the center */
+
+}
+
+.biography {
+  width: 600px;
+  padding: 10px;
+  overflow:visible;
+  word-wrap: break-word;
+}
+
+.player-details {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding-top: 70px;
+}
+
+.team-name-matches {
+  padding-top: 40px;
+  padding-right: 600px;
 }
