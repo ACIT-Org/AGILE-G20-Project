@@ -235,13 +235,13 @@ def player_id(id):
         stats["accuracy"]+=stat.accuracy
         # stats["characterPlayed"].append(stat.characterPlayed)
 
-    stats["kills"]=stats["kills"]/games
-    stats["deaths"]=stats["deaths"]/games
-    stats["assists"]=stats["assists"]/games
-    stats["damageDealt"]=stats["damageDealt"]/games
-    stats["damageBlocked"]=stats["damageBlocked"]/games
-    stats["healing"]=stats["healing"]/games
-    stats["accuracy"]=str(stats["accuracy"]/games) + "%"
+    stats["kills"]=int(stats["kills"]/games)
+    stats["deaths"]=int(stats["deaths"]/games)
+    stats["assists"]=int(stats["assists"]/games)
+    stats["damageDealt"]=int(stats["damageDealt"]/games)
+    stats["damageBlocked"]=int(stats["damageBlocked"]/games)
+    stats["healing"]=int(stats["healing"]/games)
+    stats["accuracy"]=str(int(stats["accuracy"]/games)) + "%"
     
     return render_template("playerid.html", player=player, upcoming_matches = upcoming, completed_matches = completed, stats=stats)
 
