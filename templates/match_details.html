@@ -1,9 +1,12 @@
 {% extends "base.html" %} {% block content %}
 <h1>Match Stats</h1>
 <h2>
-  <img src="{{ url_for('static', filename='images/' + matches.team1.name + '.png') }}" alt="{{ matches.team1.name  }}" class="team-logo">
+  <a href="{{url_for('team_name', name=matches.team1.name )}}">
+  <img src="{{ url_for('static', filename='images/' + matches.team1.name + '.png') }}" alt="{{ matches.team1.name  }}" class="team-logo"></a>
   {{ matches.team1.name }} vs. {{ matches.team2.name }}
+  <a href="{{url_for('team_name', name=matches.team2.name )}}">
   <img src="{{ url_for('static', filename='images/' + matches.team2.name + '.png') }}" alt="{{ matches.team2.name  }}" class="team-logo">
+  </a>
 </h2>
 <h2>{{ matches.play_date.strftime('%B %d, %Y, %I:%M %p') }}</h2>
 <h2>Winner: {{ matches.winner }}</h2>
