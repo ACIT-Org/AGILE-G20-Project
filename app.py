@@ -217,20 +217,31 @@ def player_id(id):
             "damageDealt":0,
             "damageBlocked":0,
             "healing":0,
-            "accuracy":[],
+            "accuracy":0,
             "characterPlayed":[]
             }
     
+    games=0
     playerstat = db.session.execute(db.select(PlayerStats).where(PlayerStats.player_id == id)).scalars()
     for stat in playerstat:
+        games +=1
         stats["kills"]+=stat.kills
         stats["deaths"]+=stat.deaths
         stats["assists"]+=stat.assists
         stats["damageDealt"]+=stat.damageDealt
         stats["damageBlocked"]+=stat.damageBlocked
         stats["healing"]+=stat.healing
-    #     stats["accuracy"].append(stat.accuracy)
-    #     stats["characterPlayed"].append(stat.characterPlayed)
+        stat.accuracy =int(stat.accuracy.replace('%', ''))
+        stats["accuracy"]+=stat.accuracy
+        # stats["characterPlayed"].append(stat.characterPlayed)
+
+    stats["kills"]=stats["kills"]/games
+    stats["deaths"]=stats["deaths"]/games
+    stats["assists"]=stats["assists"]/games
+    stats["damageDealt"]=stats["damageDealt"]/games
+    stats["damageBlocked"]=stats["damageBlocked"]/games
+    stats["healing"]=stats["healing"]/games
+    stats["accuracy"]=str(stats["accuracy"]/games) + "%"
     
     return render_template("playerid.html", player=player, upcoming_matches = upcoming, completed_matches = completed, stats=stats)
 
