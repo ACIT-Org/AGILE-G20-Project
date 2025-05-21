@@ -6,7 +6,7 @@
     <h2>Upcoming Matches</h2>
     {% for match in upcoming_matches %}
         {% if match.team1 is not none and match.team2 is not none %}
-        <h3 class="teams-in-match"><a href="{{ url_for('team_name', name=match.team2.name) }}"><img
+        <h3 class="teams-in-match"><a href="{{ url_for('team_name', name=match.team1.name) }}"><img
                                 src="{{ url_for('static', filename='images/' + match.team1.name + '.png') }}"
                                 alt="{{ match.team1.name }}" class="team-logo"></a><a
                         href="{{ url_for('matches_details', id=match.id) }}">{{ match.team1.name }} vs {{
@@ -21,20 +21,22 @@
     {% for match in completed_matches %}
 {% if match.team1 is not none and match.team2 is not none %}
 {% if match.winner == match.team1.name %}
-<h3 class="teams-in-match"><a href="{{ url_for('team_name', name=match.team1.name) }}"><img
-                        src="{{ url_for('static', filename='images/' + match.team1.name + '.png') }}"
-                        alt="{{ match.team1.name }}" class="team-logo"></a><a
-                href="{{ url_for('matches_details', id=match.id) }}"><u>{{ match.team1.name }}</u> vs {{
-                match.team2.name }}</a><a href="{{ url_for('team_name', name=match.team2.name) }}"><img
+                <h3 class="teams-in-match">
+                <a href="{{ url_for('team_name', name=match.team1.name) }}">
+                <img src="{{ url_for('static', filename='images/' + match.team1.name + '.png') }}" alt="{{ match.team1.name }}" class="team-logo">testsdfaggggggggggggg</a>
+                <a href="{{ url_for('matches_details', id=match.id) }}"><u>{{ match.team1.name }}</u> vs {{
+                match.team2.name }}</a>
+                <a href="{{ url_for('team_name', name=match.team2.name) }}"><img
                         src="{{ url_for('static', filename='images/' + match.team2.name + '.png') }}"
-                        alt="{{ match.team2.name }}" class="team-logo"></a></h3>
+                        alt="{{ match.team2.name }}" class="team-logo"></a>
+                </h3>
 {% else %}
-<h3 class="teams-in-match"><img src="{{ url_for('static', filename='images/' + match.team1.name + '.png') }}"
-                alt="{{ match.team1.name }}" class="team-logo"><a
+<h3 class="teams-in-match"> <a href="{{ url_for('team_name', name=match.team1.name) }}"><img src="{{ url_for('static', filename='images/' + match.team1.name + '.png') }}"
+                alt="{{ match.team1.name }}" class="team-logo"></a><a
                 href="{{ url_for('matches_details', id=match.id) }}">{{
-                match.team1.name }} vs <u>{{ match.team2.name }}</a><img
+                match.team1.name }} vs <u>{{ match.team2.name }}</a><a href="{{ url_for('team_name', name=match.team1.name) }}"><img
                 src="{{ url_for('static', filename='images/' + match.team2.name + '.png') }}"
-                alt="{{ match.team2.name }}" class="team-logo"></u></h3>
+                alt="{{ match.team2.name }}" class="team-logo"></a></u></h3>
 {% endif %}
 <p class="time-of-match">{{ match.play_date.strftime('%B %d, %Y,
         %I:%M %p') }}</p>
