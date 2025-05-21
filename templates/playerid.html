@@ -27,6 +27,27 @@
       </div>
     </div>
   </div>
+  <div>
+    <h2>Average Stats</h2>
+    <table>
+      <tr>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+        <th>Damage Dealt</th>
+        <th>Damage Blocked</th>
+        <th>Healing</th>
+      </tr>
+      <tr>
+        <td>{{ stats.kills }}</td>
+        <td>{{ stats.deaths }}</td>
+        <td>{{ stats.assists }}</td>
+        <td>{{ stats.damageDealt }}</td>
+        <td>{{ stats.damageBlocked }}</td>
+        <td>{{ stats.healing }}</td>
+      </tr>
+    </table>
+  </div>
   <h4>Upcoming Matches:</h4>
   {% for match in upcoming_matches %}
       {% if match.team1 is not none and match.team2 is not none %}

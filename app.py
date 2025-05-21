@@ -210,7 +210,29 @@ def player_id(id):
     .order_by(Match.play_date.desc())
 )
     completed = db.session.execute(completed_stmt).scalars()
-    return render_template("playerid.html", player=player, upcoming_matches = upcoming, completed_matches = completed)
+
+    stats = {"kills":0, 
+            "deaths":0, 
+            "assists":0,
+            "damageDealt":0,
+            "damageBlocked":0,
+            "healing":0,
+            "accuracy":[],
+            "characterPlayed":[]
+            }
+    
+    playerstat = db.session.execute(db.select(PlayerStats).where(PlayerStats.player_id == id)).scalars()
+    for stat in playerstat:
+        stats["kills"]+=stat.kills
+        stats["deaths"]+=stat.deaths
+        stats["assists"]+=stat.assists
+        stats["damageDealt"]+=stat.damageDealt
+        stats["damageBlocked"]+=stat.damageBlocked
+        stats["healing"]+=stat.healing
+    #     stats["accuracy"].append(stat.accuracy)
+    #     stats["characterPlayed"].append(stat.characterPlayed)
+    
+    return render_template("playerid.html", player=player, upcoming_matches = upcoming, completed_matches = completed, stats=stats)
 
 app.register_blueprint(api_bp, url_prefix="/api")
 
