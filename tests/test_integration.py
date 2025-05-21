@@ -73,21 +73,27 @@ def test_players_view_with_one_player(client):
 
 def test_match_view_to_view_one_player(client):
     #create a team and add it to the db
-    team = Team(name="Sharks")
-    db.session.add(team)
+    team1 = Team(name="Sharks")
+    db.session.add(team1)
+
+    team2 = Team(name="Sharks")
+    db.session.add(team2)
 
     #create a player and add them to the team
-    player = Player(name="Jane Smith", team_id=team.id)
-    db.session.add(player)
+    player1 = Player(name="Jane Smith", team_id=team1.id,)
+    db.session.add(player1)
+
+    player2 = Player(name="John Smith", team_id=team2.id,)
+    db.session.add(player2)
 
     #create two matches one completed and one not completed
-    match1 = Match(team1_id=team.id, team2_id=team.id, completed=False)
-    match2 = Match(team1_id=team.id, team2_id=team.id, completed=True)
+    match1 = Match(team1_id=team1.id, team2_id=team2.id, completed=False)
+    match2 = Match(team1_id=team2.id, team2_id=team1.id, completed=True)
     db.session.add(match1)
     db.session.add(match2)
     db.session.commit()
 
-    response = client.get(f"/players/{player.id}")
+    response = client.get(f"/players/{player1.id}")
     #ensure correct response code and data is shown
     assert response.status_code == 200
     assert b"Jane Smith" in response.data
